@@ -1,0 +1,81 @@
+# ============================================
+# 🐍 Python / Flask
+# ============================================
+
+# Archivos compilados de Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pkl
+
+# Entorno virtual
+venv/
+env/
+ENV/
+.venv/
+
+# Configuración local o sensible
+.env
+config.py
+
+# Archivos de log o caché
+*.log
+*.bak
+*.tmp
+*.swp
+*.sqlite3
+instance/
+
+# ============================================
+# 💻 Editor y sistema operativo
+# ============================================
+
+# Visual Studio Code
+.vscode/
+.settings/
+.history/
+*.code-workspace
+
+# MacOS y Windows
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ============================================
+# 📦 Dependencias y compilaciones
+# ============================================
+
+# Archivos de instalación
+build/
+dist/
+*.egg-info/
+*.egg
+pip-wheel-metadata/
+
+# ============================================
+# 🌐 Proyecto HabitTracker específico
+# ============================================
+
+# Archivos de respaldo/exportación
+static/exports/
+
+# Capturas o documentación temporal
+docs/*.tmp
+docs/*.bak
+
+# Archivos de prueba locales
+test_*.py
+tests/__pycache__/
+
+# ============================================
+# 🔒 Otros
+# ============================================
+
+# JSON de backups generados
+*.json
+*.zip
+*.tar.gz
+
+# Carpeta de caché
+.cache/
