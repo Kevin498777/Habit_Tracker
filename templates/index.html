@@ -82,13 +82,14 @@
                 <h5 class="card-title mb-0">Resumen</h5>
             </div>
             <div class="card-body">
+                <!-- En el panel de estadísticas, cambia: -->
                 <div class="text-center">
-                    <h3>{{ habits|length }}</h3>
+                    <h3 class="total-habits">{{ habits|length }}</h3>
                     <p class="text-muted">Hábitos Totales</p>
                 </div>
                 <hr>
                 <div class="text-center">
-                    <h3>{{ today_completed }}</h3>
+                    <h3 class="completed-today">{{ today_completed }}</h3>
                     <p class="text-muted">Completados Hoy</p>
                 </div>
                 <div class="mt-3">

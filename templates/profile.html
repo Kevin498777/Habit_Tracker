@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Mi Perfil - HabitTracker{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card fade-in">
+            <div class="card-header">
+                <h3 class="card-title mb-0">Mi Perfil</h3>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-12 text-center">
+                        <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                             style="width: 80px; height: 80px;">
+                            <span class="text-white fs-4 fw-bold">{{ session.username[0]|upper }}</span>
+                        </div>
+                        <h4>{{ session.username }}</h4>
+                        <p class="text-muted">{{ session.email }}</p>
+                    </div>
+                </div>
+                
+                <div class="row text-center">
+                    <div class="col-6">
+                        <div class="stats-card">
+                            <h3>{{ habit_count }}</h3>
+                            <p class="text-muted">Hábitos Totales</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stats-card">
+                            <h3>{{ completed_today }}</h3>
+                            <p class="text-muted">Completados Hoy</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <h5>Información de la Cuenta</h5>
+                    <div class="list-group">
+                        <div class="list-group-item d-flex justify-content-between">
+                            <span>Usuario:</span>
+                            <span class="code-badge">{{ session.username }}</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between">
+                            <span>Email:</span>
+                            <span class="code-badge">{{ session.email }}</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between">
+                            <span>Miembro desde:</span>
+                            <span>{{ user.created_at.strftime('%d/%m/%Y') if user else 'N/A' }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4 text-center">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary me-2">Volver al Dashboard</a>
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">Cerrar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

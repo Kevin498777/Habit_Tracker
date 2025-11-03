@@ -4,31 +4,38 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card">
+    <div class="col-md-6 col-lg-5">
+        <div class="card fade-in">
             <div class="card-header">
-                <h3 class="card-title text-center">Iniciar Sesión</h3>
+                <h3 class="card-title text-center mb-0">Iniciar Sesión</h3>
             </div>
             <div class="card-body">
-                <form>
+                <form method="POST" action="{{ url_for('login') }}">
                     <div class="mb-3">
-                        <label for="email" class="form-label">Correo Electrónico</label>
-                        <input type="email" class="form-control" id="email" required>
+                        <label for="username" class="form-label">Usuario o Email</label>
+                        <input type="text" class="form-control" id="username" name="username" 
+                               placeholder="Ingresa tu usuario o email" required>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="password" required>
+                        <input type="password" class="form-control" id="password" name="password" 
+                               placeholder="Ingresa tu contraseña" required>
                     </div>
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="remember">
-                        <label class="form-check-label" for="remember">Recordarme</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+                    <button type="submit" class="btn btn-primary w-100 mb-3">Iniciar Sesión</button>
                 </form>
-                <div class="text-center mt-3">
-                    <p>¿No tienes una cuenta? <a href="{{ url_for('register') }}">Regístrate aquí</a></p>
+                <div class="text-center">
+                    <p class="text-muted mb-0">¿No tienes una cuenta?</p>
+                    <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-sm mt-2">
+                        Crear Cuenta
+                    </a>
                 </div>
             </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <small class="text-muted">
+                <span class="code-badge">// Demo: usuario: demo / contraseña: demo123</span>
+            </small>
         </div>
     </div>
 </div>
