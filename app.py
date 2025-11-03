@@ -236,16 +236,29 @@ def complete_habit(habit_id):
             return redirect(url_for('index'))
         
         today = datetime.now().strftime('%Y-%m-%d')
+        print(f"DEBUG: Completando hábito {habit_id} para la fecha {today}")  # Debug
+        
+        # Verificar si ya está completado hoy
+        completed_dates = habit.get('completed_dates', [])
+        if today in completed_dates:
+            flash('Este hábito ya fue completado hoy', 'info')
+            return redirect(url_for('index'))
+        
+        # Actualizar el hábito
         result = habits_collection.update_one(
             {'_id': ObjectId(habit_id), 'user_id': session['user_id']},
-            {'$addToSet': {'completed_dates': today}}
+            {'$push': {'completed_dates': today}}  # Cambié $addToSet por $push para debug
         )
         
+        print(f"DEBUG: Resultado de actualización - Modified: {result.modified_count}")  # Debug
+        
         if result.modified_count > 0:
-            flash('¡Hábito completado!', 'success')
+            flash('¡Hábito completado! ✅', 'success')
         else:
-            flash('El hábito ya estaba completado hoy', 'info')
+            flash('No se pudo completar el hábito', 'error')
+            
     except Exception as e:
+        print(f"ERROR en complete_habit: {e}")  # Debug
         flash('Error al completar el hábito', 'error')
     
     return redirect(url_for('index'))

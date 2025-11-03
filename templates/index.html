@@ -5,69 +5,101 @@
 {% block content %}
 <div class="row">
     <div class="col-md-8">
-        <h1 class="mb-4">Mis Hábitos Diarios</h1>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Mis Hábitos Diarios</h1>
+            <span class="code-badge">Usuario: {{ session.username }}</span>
+        </div>
         
         <!-- Formulario para agregar hábito -->
-        <div class="card mb-4">
+        <div class="card mb-4 fade-in">
             <div class="card-header">
-                <h5 class="card-title mb-0">Agregar Nuevo Hábito</h5>
+                <h5 class="card-title mb-0">➕ Agregar Nuevo Hábito</h5>
             </div>
             <div class="card-body">
                 <form action="{{ url_for('add_habit') }}" method="POST">
-                    <div class="mb-3">
-                        <label for="habit_name" class="form-label">Nombre del Hábito</label>
-                        <input type="text" class="form-control" id="habit_name" name="habit_name" 
-                               placeholder="Ej: Ejercicio, Leer, Meditar..." required>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="habit_name" class="form-label">Nombre del Hábito *</label>
+                            <input type="text" class="form-control" id="habit_name" name="habit_name" 
+                                   placeholder="Ej: Ejercicio, Leer, Meditar..." required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="habit_description" class="form-label">Descripción (opcional)</label>
+                            <input type="text" class="form-control" id="habit_description" name="habit_description" 
+                                  placeholder="Describe tu hábito...">
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="habit_description" class="form-label">Descripción (opcional)</label>
-                        <textarea class="form-control" id="habit_description" name="habit_description" 
-                                  rows="2" placeholder="Describe tu hábito..."></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Agregar Hábito</button>
+                    <button type="submit" class="btn btn-primary">
+                        ➕ Agregar Hábito
+                    </button>
                 </form>
             </div>
         </div>
 
         <!-- Lista de hábitos -->
-        <div class="card">
+        <div class="card fade-in">
             <div class="card-header">
-                <h5 class="card-title mb-0">Mis Hábitos</h5>
+                <h5 class="card-title mb-0">📊 Mis Hábitos</h5>
             </div>
             <div class="card-body">
                 {% if habits %}
                     <div class="list-group">
                         {% for habit in habits %}
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="mb-1">{{ habit.name }}</h6>
-                                {% if habit.description %}
-                                    <p class="mb-1 text-muted">{{ habit.description }}</p>
-                                {% endif %}
-                                <small class="text-muted">
-                                    Creado: {{ habit.created_at.strftime('%d/%m/%Y') }}
-                                    | Completado: {{ habit.completed_dates|length }} veces
-                                </small>
-                            </div>
-                            <div class="btn-group">
-                                <form action="{{ url_for('complete_habit', habit_id=habit._id) }}" method="POST" class="me-2">
-                                    <button type="submit" class="btn btn-success btn-sm">
-                                        [OK] Completar Hoy
-                                    </button>
-                                </form>
-                                <form action="{{ url_for('delete_habit', habit_id=habit._id) }}" method="POST" 
-                                    onsubmit="return confirm('¿Estás seguro de que quieres eliminar este hábito?');">
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        [X] Eliminar
-                                    </button>
-                                </form>
+                        <div class="list-group-item {% if today in habit.completed_dates %}habit-completed{% endif %}">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="flex-grow-1">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <h6 class="mb-0 me-2">{{ habit.name }}</h6>
+                                        {% if today in habit.completed_dates %}
+                                        <span class="badge bg-success">✅ Completado Hoy</span>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    {% if habit.description %}
+                                        <p class="mb-2 text-muted">{{ habit.description }}</p>
+                                    {% endif %}
+                                    
+                                    <div class="d-flex flex-wrap gap-3">
+                                        <small class="text-muted">
+                                            📅 Creado: {{ habit.created_at.strftime('%d/%m/%Y a las %H:%M') }}
+                                        </small>
+                                        <small class="text-muted">
+                                            ✅ Completado: {{ habit.completed_dates|length }} veces
+                                        </small>
+                                        {% if habit.completed_dates %}
+                                        <small class="text-muted">
+                                            🗓️ Última vez: {{ habit.completed_dates[-1] if habit.completed_dates else 'Nunca' }}
+                                        </small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="btn-group ms-3">
+                                    {% if today not in habit.completed_dates %}
+                                    <form action="{{ url_for('complete_habit', habit_id=habit._id) }}" method="POST" class="me-2">
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            ✅ Completar Hoy
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                    
+                                    <form action="{{ url_for('delete_habit', habit_id=habit._id) }}" method="POST" 
+                                          onsubmit="return confirm('¿Estás seguro de que quieres eliminar este hábito?');">
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            🗑️ Eliminar
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                         {% endfor %}
                     </div>
                 {% else %}
-                    <div class="text-center py-4">
-                        <p class="text-muted">No tienes hábitos registrados todavía.</p>
+                    <div class="text-center py-5">
+                        <div class="mb-3">
+                            <span style="font-size: 3rem;">📝</span>
+                        </div>
+                        <h5 class="text-muted">No tienes hábitos registrados todavía</h5>
                         <p class="text-muted">¡Comienza agregando tu primer hábito arriba!</p>
                     </div>
                 {% endif %}
@@ -77,25 +109,59 @@
 
     <!-- Panel de estadísticas -->
     <div class="col-md-4">
-        <div class="card">
+        <div class="card fade-in">
             <div class="card-header">
-                <h5 class="card-title mb-0">Resumen</h5>
+                <h5 class="card-title mb-0">📈 Resumen</h5>
             </div>
             <div class="card-body">
-                <!-- En el panel de estadísticas, cambia: -->
-                <div class="text-center">
-                    <h3 class="total-habits">{{ habits|length }}</h3>
+                <div class="text-center mb-4">
+                    <h3 class="text-primary">{{ habits|length }}</h3>
                     <p class="text-muted">Hábitos Totales</p>
                 </div>
-                <hr>
-                <div class="text-center">
-                    <h3 class="completed-today">{{ today_completed }}</h3>
+                
+                <div class="text-center mb-4">
+                    <h3 class="text-success">{{ today_completed }}</h3>
                     <p class="text-muted">Completados Hoy</p>
                 </div>
+                
+                {% if habits %}
                 <div class="mt-3">
+                    <h6>Progreso del Día</h6>
+                    <div class="progress mb-3" style="height: 10px;">
+                        <div class="progress-bar bg-success" 
+                             style="width: {{ (today_completed / habits|length * 100) if habits|length > 0 else 0 }}%">
+                        </div>
+                    </div>
                     <small class="text-muted">
-                        💡 Tip: Mantén tu racha completando tus hábitos cada día.
+                        {{ today_completed }} de {{ habits|length }} hábitos completados hoy
+                        ({{ "%.1f"|format((today_completed / habits|length * 100) if habits|length > 0 else 0) }}%)
                     </small>
+                </div>
+                {% endif %}
+                
+                <hr>
+                
+                <div class="text-center">
+                    <small class="text-muted">
+                        💡 <strong>Tip:</strong> Mantén tu racha completando tus hábitos cada día.
+                    </small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Acciones rápidas -->
+        <div class="card mt-4 fade-in">
+            <div class="card-header">
+                <h5 class="card-title mb-0">⚡ Acciones Rápidas</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('profile') }}" class="btn btn-outline-primary">
+                        👤 Mi Perfil
+                    </a>
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">
+                        🚪 Cerrar Sesión
+                    </a>
                 </div>
             </div>
         </div>

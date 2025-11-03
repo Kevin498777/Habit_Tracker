@@ -287,3 +287,67 @@ function showToast(message, type = 'info') {
         }, 300);
     }, 3000);
 }
+// Manejar el completado de hábitos con feedback visual
+function initHabitCompletion() {
+    const completeForms = document.querySelectorAll('form[action*="/complete_habit/"]');
+    
+    completeForms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            // Feedback visual inmediato
+            submitBtn.innerHTML = '⏳ Completando...';
+            submitBtn.disabled = true;
+            submitBtn.classList.add('btn-secondary');
+            submitBtn.classList.remove('btn-success');
+            
+            // Enviar el formulario después de un breve delay para que se vea el feedback
+            setTimeout(() => {
+                this.submit();
+            }, 500);
+        });
+    });
+}
+
+// Actualizar estadísticas en tiempo real
+function updateHabitStats() {
+    const today = new Date().toISOString().split('T')[0];
+    const habitItems = document.querySelectorAll('.list-group-item');
+    let completedToday = 0;
+    
+    habitItems.forEach(item => {
+        if (item.classList.contains('habit-completed')) {
+            completedToday++;
+        }
+    });
+    
+    // Actualizar contadores en la UI
+    const completedElement = document.querySelector('.completed-today');
+    const progressBar = document.querySelector('.progress-bar');
+    const progressText = document.querySelector('.progress + small');
+    
+    if (completedElement) {
+        completedElement.textContent = completedToday;
+    }
+    
+    if (progressBar && progressText) {
+        const totalHabits = habitItems.length;
+        const percentage = totalHabits > 0 ? (completedToday / totalHabits * 100) : 0;
+        
+        progressBar.style.width = `${percentage}%`;
+        progressText.textContent = 
+            `${completedToday} de ${totalHabits} hábitos completados hoy (${percentage.toFixed(1)}%)`;
+    }
+}
+
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    initHabitCompletion();
+    updateHabitStats();
+    
+    // Actualizar estadísticas cada 5 segundos (opcional)
+    setInterval(updateHabitStats, 5000);
+});
