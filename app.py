@@ -1,6 +1,6 @@
 # app.py
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from pymongo import MongoClient
 from dotenv import load_dotenv
@@ -48,35 +48,66 @@ def is_valid_email(email):
 @app.route('/')
 def index():
     """Página principal que muestra la lista de hábitos"""
-    # Si el usuario no está logueado, redirigir al login
     if 'user_id' not in session:
         return redirect(url_for('login'))
     
+    # Inicializar variables con valores por defecto
+    habits = []
+    today_completed = 0
+    total_habits = 0
+    completion_rate = 0.0
+    week_completions = 0
+    today = datetime.now().strftime('%Y-%m-%d')
+    
     try:
         if habits_collection is not None:
-            # Solo obtener hábitos del usuario actual
             habits = list(habits_collection.find(
                 {'user_id': session['user_id']}
             ).sort('created_at', -1))
             
-            today = datetime.now().strftime('%Y-%m-%d')
             today_completed = sum(1 for habit in habits if today in habit.get('completed_dates', []))
+            total_habits = len(habits)
+            
+            # Calcular tasa de completado DE FORMA SEGURA
+            if total_habits > 0:
+                completion_rate = round((today_completed / total_habits) * 100, 1)
+            else:
+                completion_rate = 0.0
+            
+            # Calcular hábitos de esta semana
+            week_dates = []
+            for i in range(7):
+                day = datetime.now() - timedelta(days=i)
+                week_dates.append(day.strftime('%Y-%m-%d'))
+            
+            week_completions = 0
+            for habit in habits:
+                for date in habit.get('completed_dates', []):
+                    if date in week_dates:
+                        week_completions += 1
+                        break
+                        
         else:
-            habits = []
-            today_completed = 0
             flash('Error de conexión con la base de datos', 'error')
     except Exception as e:
-        habits = []
-        today_completed = 0
+        print(f"Error en index: {e}")
         flash('Error al cargar los hábitos', 'error')
     
-    return render_template('index.html', habits=habits, today_completed=today_completed)
+    # DEBUG: Verificar valores
+    print(f"DEBUG - total_habits: {total_habits}, today_completed: {today_completed}, completion_rate: {completion_rate}")
+    
+    return render_template('index.html', 
+                         habits=habits, 
+                         today_completed=today_completed,
+                         total_habits=total_habits,
+                         completion_rate=completion_rate,
+                         week_completions=week_completions,
+                         today=today)
 
 # RUTAS DE AUTENTICACIÓN
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """Registro de nuevos usuarios"""
-    # Si ya está logueado, redirigir al index
     if 'user_id' in session:
         return redirect(url_for('index'))
     
@@ -140,7 +171,6 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     """Inicio de sesión de usuarios"""
-    # Si ya está logueado, redirigir al index
     if 'user_id' in session:
         return redirect(url_for('index'))
     
@@ -173,10 +203,7 @@ def login():
             session['email'] = user['email']
             
             flash(f'¡Bienvenido de nuevo {user["username"]}!', 'success')
-            
-            # Redirigir a la página que intentaba acceder o al index
-            next_page = request.args.get('next')
-            return redirect(next_page or url_for('index'))
+            return redirect(url_for('index'))
         else:
             flash('Usuario o contraseña incorrectos', 'error')
     
@@ -207,7 +234,7 @@ def add_habit():
             'description': habit_description,
             'created_at': datetime.now(),
             'completed_dates': [],
-            'user_id': session['user_id']  # Asociar hábito al usuario
+            'user_id': session['user_id']
         }
         habits_collection.insert_one(habit)
         flash('¡Hábito agregado correctamente!', 'success')
@@ -236,7 +263,6 @@ def complete_habit(habit_id):
             return redirect(url_for('index'))
         
         today = datetime.now().strftime('%Y-%m-%d')
-        print(f"DEBUG: Completando hábito {habit_id} para la fecha {today}")  # Debug
         
         # Verificar si ya está completado hoy
         completed_dates = habit.get('completed_dates', [])
@@ -247,10 +273,8 @@ def complete_habit(habit_id):
         # Actualizar el hábito
         result = habits_collection.update_one(
             {'_id': ObjectId(habit_id), 'user_id': session['user_id']},
-            {'$push': {'completed_dates': today}}  # Cambié $addToSet por $push para debug
+            {'$push': {'completed_dates': today}}
         )
-        
-        print(f"DEBUG: Resultado de actualización - Modified: {result.modified_count}")  # Debug
         
         if result.modified_count > 0:
             flash('¡Hábito completado! ✅', 'success')
@@ -258,7 +282,7 @@ def complete_habit(habit_id):
             flash('No se pudo completar el hábito', 'error')
             
     except Exception as e:
-        print(f"ERROR en complete_habit: {e}")  # Debug
+        print(f"ERROR en complete_habit: {e}")
         flash('Error al completar el hábito', 'error')
     
     return redirect(url_for('index'))

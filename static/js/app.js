@@ -351,3 +351,42 @@ document.addEventListener('DOMContentLoaded', function() {
     // Actualizar estadísticas cada 5 segundos (opcional)
     setInterval(updateHabitStats, 5000);
 });
+
+// Inicializar círculos de progreso
+function initProgressCircles() {
+    const progressCircles = document.querySelectorAll('.progress-circle');
+    
+    progressCircles.forEach(circle => {
+        const percentage = circle.getAttribute('data-percentage');
+        const progressBar = circle.querySelector('.progress-circle-bar');
+        
+        if (progressBar && percentage) {
+            const circumference = 2 * Math.PI * 54;
+            const offset = circumference - (percentage / 100) * circumference;
+            
+            // Aplicar la animación después de un pequeño delay
+            setTimeout(() => {
+                progressBar.style.strokeDashoffset = offset;
+            }, 300);
+        }
+    });
+}
+
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    initProgressCircles();
+    
+    // Re-inicializar cuando se agreguen nuevos hábitos (para Single Page Apps)
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.addedNodes.length) {
+                initProgressCircles();
+            }
+        });
+    });
+    
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+});

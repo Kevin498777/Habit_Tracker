@@ -109,42 +109,33 @@
 
     <!-- Panel de estadísticas -->
     <div class="col-md-4">
+        <!-- Resumen rápido -->
         <div class="card fade-in">
             <div class="card-header">
-                <h5 class="card-title mb-0">📈 Resumen</h5>
+                <h5 class="card-title mb-0">📊 Resumen Rápido</h5>
             </div>
             <div class="card-body">
-                <div class="text-center mb-4">
-                    <h3 class="text-primary">{{ habits|length }}</h3>
-                    <p class="text-muted">Hábitos Totales</p>
-                </div>
-                
-                <div class="text-center mb-4">
-                    <h3 class="text-success">{{ today_completed }}</h3>
-                    <p class="text-muted">Completados Hoy</p>
-                </div>
-                
-                {% if habits %}
-                <div class="mt-3">
-                    <h6>Progreso del Día</h6>
-                    <div class="progress mb-3" style="height: 10px;">
-                        <div class="progress-bar bg-success" 
-                             style="width: {{ (today_completed / habits|length * 100) if habits|length > 0 else 0 }}%">
+                <div class="row text-center">
+                    <div class="col-6 mb-3">
+                        <div class="stats-card">
+                            <h3 class="text-primary">{{ total_habits }}</h3>
+                            <p class="text-muted">Total</p>
                         </div>
                     </div>
-                    <small class="text-muted">
-                        {{ today_completed }} de {{ habits|length }} hábitos completados hoy
-                        ({{ "%.1f"|format((today_completed / habits|length * 100) if habits|length > 0 else 0) }}%)
-                    </small>
+                    <div class="col-6 mb-3">
+                        <div class="stats-card">
+                            <h3 class="text-success">{{ today_completed }}</h3>
+                            <p class="text-muted">Hoy</p>
+                        </div>
+                    </div>
                 </div>
-                {% endif %}
-                
-                <hr>
-                
-                <div class="text-center">
-                    <small class="text-muted">
-                        💡 <strong>Tip:</strong> Mantén tu racha completando tus hábitos cada día.
-                    </small>
+                <div class="row text-center">
+                    <div class="col-12">
+                        <div class="stats-card">
+                            <h3 class="text-warning">{{ week_completions }}</h3>
+                            <p class="text-muted">Esta Semana</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -162,6 +153,62 @@
                     <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">
                         🚪 Cerrar Sesión
                     </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Barra de Progreso Mejorada - VERSIÓN SIMPLIFICADA -->
+        <div class="card mt-4 fade-in">
+            <div class="card-header">
+                <h5 class="card-title mb-0">🎯 Progreso Diario</h5>
+            </div>
+            <div class="card-body">
+                {% if completion_rate is defined %}
+                    {% set rate = completion_rate %}
+                {% else %}
+                    {% set rate = 0 %}
+                {% endif %}
+                
+                <div class="text-center mb-3">
+                    <h3 class="text-primary">{{ "%.0f"|format(rate) }}%</h3>
+                    <p class="text-muted">Completado Hoy</p>
+                </div>
+
+                <div class="stats-details">
+                    <div class="stat-item d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted">Total:</span>
+                        <span class="fw-bold">{{ total_habits }}</span>
+                    </div>
+                    <div class="stat-item d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted">Completados:</span>
+                        <span class="fw-bold text-success">{{ today_completed }}</span>
+                    </div>
+                    <div class="stat-item d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted">Pendientes:</span>
+                        <span class="fw-bold text-warning">{{ total_habits - today_completed }}</span>
+                    </div>
+                </div>
+
+                <div class="progress mt-3" style="height: 12px; border-radius: 10px; background: rgba(45, 55, 72, 0.7);">
+                    <div class="progress-bar" role="progressbar" 
+                         style="width: {{ rate }}%; background: linear-gradient(90deg, #6366f1, #10b981); border-radius: 10px;"
+                         aria-valuenow="{{ rate }}" aria-valuemin="0" aria-valuemax="100">
+                    </div>
+                </div>
+
+                <!-- Mensaje motivacional -->
+                <div class="text-center mt-3">
+                    {% if rate == 100 %}
+                    <small class="text-success">🎉 ¡Perfecto! Has completado todos tus hábitos hoy.</small>
+                    {% elif rate >= 75 %}
+                    <small class="text-success">👍 ¡Excelente progreso! Casi lo logras.</small>
+                    {% elif rate >= 50 %}
+                    <small class="text-warning">💪 Vas por buen camino, ¡sigue así!</small>
+                    {% elif rate > 0 %}
+                    <small class="text-info">🚀 Buen comienzo, ¡continúa con el momentum!</small>
+                    {% else %}
+                    <small class="text-muted">🌟 ¡Comienza completando tu primer hábito hoy!</small>
+                    {% endif %}
                 </div>
             </div>
         </div>
