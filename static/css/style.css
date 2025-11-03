@@ -196,7 +196,7 @@ body {
 }
 
 .form-label {
-  color: var(--text-secondary);
+  color: #e2e8f0;
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
@@ -333,3 +333,14 @@ footer {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary-light);
 }
+
+.list-group-item h6 {
+    color: #c4b5fd !important;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+
+
+
+
