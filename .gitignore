@@ -1,4 +1,4 @@
-#venv\Scripts\activate
+#Kevin Brian Ibarra Pineda
 #
 #
 
@@ -18,7 +18,14 @@ venv/
 env/
 ENV/
 .venv/
-
+.env
+.env.production
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
 # Configuración local o sensible
 .env
 config.py
