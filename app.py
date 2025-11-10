@@ -26,8 +26,9 @@ try:
     
 except Exception as e:
     print(f"ERROR - Conectando a MongoDB: {e}")
-    # No establecer como None, mejor dejar que falle temprano
-    raise e  # Esto hará que el error sea más claro
+    # En producción, continuar pero mostrar error claro
+    habits_collection = None
+    users_collection = None
 
 # Función para verificar si el usuario está logueado
 def login_required(f):
