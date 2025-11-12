@@ -7,12 +7,12 @@
     <div class="col-md-6 col-lg-5">
         <div class="card fade-in">
             <div class="card-header">
-                <h3 class="card-title text-center mb-0">Iniciar Sesión super chida</h3>
+                <h3 class="card-title text-center mb-0">Iniciar Sesión</h3>
             </div>
             <div class="card-body">
                 <form method="POST" action="{{ url_for('login') }}">
                     <div class="mb-3">
-                        <label for="username" class="form-label">Usuario o Correo electronico</label>
+                        <label for="username" class="form-label">Usuario o Email</label>
                         <input type="text" class="form-control" id="username" name="username" 
                                placeholder="Ingresa tu usuario o email" required>
                     </div>
@@ -21,6 +21,10 @@
                         <input type="password" class="form-control" id="password" name="password" 
                                placeholder="Ingresa tu contraseña" required>
                     </div>
+                    <form action="/action_page.php">
+                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                        <label for="vehicle1"> Recordar mis datos</label><br>
+                    </form>
                     <button type="submit" class="btn btn-primary w-100 mb-3">Iniciar Sesión</button>
                 </form>
                 <div class="text-center">
