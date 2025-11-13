@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Hábito - HabitTracker{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card fade-in">
+            <div class="card-header">
+                <h3 class="card-title mb-0">✏️ Editar Hábito</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="habit_name" class="form-label">Nombre del Hábito *</label>
+                            <input type="text" class="form-control" id="habit_name" name="habit_name" 
+                                   value="{{ habit.name }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="habit_description" class="form-label">Descripción (opcional)</label>
+                            <input type="text" class="form-control" id="habit_description" name="habit_description" 
+                                  value="{{ habit.description or '' }}">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Actualizar Hábito</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

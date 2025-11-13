@@ -312,6 +312,55 @@ def delete_habit(habit_id):
     
     return redirect(url_for('index'))
 
+@app.route('/edit_habit/<habit_id>', methods=['GET', 'POST'])
+@login_required
+def edit_habit(habit_id):
+    """Editar un hábito existente"""
+    if habits_collection is None:
+        flash('Error de conexión con la base de datos', 'error')
+        return redirect(url_for('index'))
+    
+    try:
+        # Verificar que el hábito pertenece al usuario
+        habit = habits_collection.find_one({
+            '_id': ObjectId(habit_id),
+            'user_id': session['user_id']
+        })
+        
+        if not habit:
+            flash('Hábito no encontrado', 'error')
+            return redirect(url_for('index'))
+        
+        if request.method == 'POST':
+            habit_name = request.form.get('habit_name')
+            habit_description = request.form.get('habit_description')
+            
+            if habit_name:
+                # Actualizar el hábito
+                result = habits_collection.update_one(
+                    {'_id': ObjectId(habit_id), 'user_id': session['user_id']},
+                    {'$set': {
+                        'name': habit_name,
+                        'description': habit_description
+                    }}
+                )
+                
+                if result.modified_count > 0:
+                    flash('¡Hábito actualizado correctamente!', 'success')
+                else:
+                    flash('No se realizaron cambios en el hábito', 'info')
+                return redirect(url_for('index'))
+            else:
+                flash('El nombre del hábito es requerido', 'error')
+        
+        # Si es GET, mostrar el formulario de edición
+        return render_template('edit_habit.html', habit=habit)
+        
+    except Exception as e:
+        print(f"ERROR en edit_habit: {e}")
+        flash('Error al cargar el hábito para edición', 'error')
+        return redirect(url_for('index'))
+
 @app.route('/profile')
 @login_required
 def profile():
