@@ -1,0 +1,22 @@
+# prometheus/prometheus.yml
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: "app"
+    scheme: https
+
+    metrics_path: /metrics
+
+    static_configs:
+      # Reemplaza aquí por:
+      - "habit-tracker-1-fdq0.onrender.com"  
+      # O para pruebas locales:
+      # - "host.docker.internal:5001"       <-- cuando Prometheus corre en Docker y tu app local
+      # - "localhost:5001"                  <-- si Prometheus corre local fuera de Docker
+      - targets: ["REPLACE_WITH_YOUR_HOST"]
+
+# Ejemplos:
+# - targets: ["mi-app-something.onrender.com"]    # producción en Render (scheme: https)
+# - targets: ["localhost:5001"]                   # pruebas locales (cambiar scheme a http)
