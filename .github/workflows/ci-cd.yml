@@ -1,0 +1,130 @@
+name: HabitTracker CI/CD Pipeline
+
+on:
+  push:
+    branches: [develop, master]    
+  pull_request:
+    branches: [master]             
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install security tools
+      run: |
+        pip install bandit safety
+    
+    - name: Run Bandit (SAST)
+      run: |
+        bandit -r . -f html -o bandit-report.html
+        echo "##  Bandit Report" >> $GITHUB_STEP_SUMMARY
+        echo "Security scan completed. Check artifacts for details." >> $GITHUB_STEP_SUMMARY
+    
+    - name: Check dependencies with Safety
+      run: |
+        safety check -r requirements.txt --output html > safety-report.html
+    
+    - name: Secret scanning with TruffleHog
+      run: |
+        trufflehog filesystem . --no-verification --json | head -100 > trufflehog-report.json
+    
+    - name: Upload security reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-reports
+        path: |
+          bandit-report.html
+          safety-report.html
+          trufflehog-report.json
+
+  tests:
+    runs-on: ubuntu-latest
+    needs: security-scan
+    services:
+      mongodb:
+        image: mongo:6
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd mongo
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install pytest pytest-cov
+    
+    - name: Create .env file for testing
+      run: |
+        echo "MONGODB_URI=mongodb://localhost:27017/habittracker_test" > .env
+        echo "SECRET_KEY=test-key-12345" >> .env
+    
+    - name: Run tests
+      run: |
+        python -m pytest tests/ -v --cov=app --cov-report=xml
+    
+    - name: Upload test coverage
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: coverage.xml
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: tests
+    if: github.ref == 'refs/heads/master'  
+    environment: production
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Create production .env file
+      env:
+        MONGODB_URI_PROD: ${{ secrets.MONGODB_URI_PROD }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      run: |
+        echo "MONGODB_URI=$MONGODB_URI_PROD" > .env
+        echo "SECRET_KEY=$SECRET_KEY" >> .env
+        echo "DEBUG=False" >> .env
+        echo "ENVIRONMENT=production" >> .env
+    
+    - name: Install production dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install gunicorn
+    
+    - name: Deploy simulation
+      run: |
+        echo " Desplegando HabitTracker a producción..."
+        echo " Fecha: $(date)"
+        echo " Entorno: ${{ github.ref }}"
+        echo " Último commit: ${{ github.sha }}"
+        echo " Pipeline completado exitosamente!"
+    
+    - name: Create deployment summary
+      run: |
+        echo "##  Despliegue Completado" >> $GITHUB_STEP_SUMMARY
+        echo "- **Aplicación:** HabitTracker" >> $GITHUB_STEP_SUMMARY
+        echo "- **Entorno:** Producción" >> $GITHUB_STEP_SUMMARY
+        echo "- **Estado:**  Exitoso" >> $GITHUB_STEP_SUMMARY
+        echo "- **Horario:** $(date)" >> $GITHUB_STEP_SUMMARY
