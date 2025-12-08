@@ -75,7 +75,6 @@ jobs:
         cat > tests/test_basic.py << 'EOF'
         import unittest
         import os
-        import sys
         
         class TestHabitTracker(unittest.TestCase):
             def test_environment_setup(self):
@@ -87,16 +86,14 @@ jobs:
                 try:
                     import flask
                     import pymongo
-                    import python_dotenv
+                    import dotenv
                     self.assertTrue(True)
                 except ImportError as e:
                     self.fail(f"Failed to import required package: {e}")
             
-            def test_flask_app_structure(self):
-                """Test basic Flask app structure"""
-                # This is a placeholder for actual app tests
-                # In a real scenario, you would import and test your app
-                self.assertTrue(True)
+            def test_basic_assertion(self):
+                """Basic test to ensure testing works"""
+                self.assertEqual(1 + 1, 2)
         
         if __name__ == '__main__':
             unittest.main()
