@@ -4,3 +4,6 @@ python-dotenv==1.0.0
 Werkzeug==3.0.3
 gunicorn==22.0.0
 prometheus-client==0.16.0
+
+# django==1.11.29  # Versión con vulnerabilidades conocidas
+
