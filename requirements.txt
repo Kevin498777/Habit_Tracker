@@ -1,8 +1,6 @@
-
-Flask==2.3.3
-pymongo==4.5.0
+Flask==3.0.3
+pymongo==4.7.2
 python-dotenv==1.0.0
-Werkzeug==2.3.7
-gunicorn==21.2.0
-
+Werkzeug==3.0.3
+gunicorn==22.0.0
 prometheus-client==0.16.0
