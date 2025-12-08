@@ -11,7 +11,7 @@ Aplicación web para registro y seguimiento de hábitos diarios. Permite crear h
 - Diseño responsive e intuitivo
 - Seguridad robusta con autenticación
 
-## Tecnologías
+## Tecnologías 
 - Backend: Python + Flask
 - Base de Datos: MongoDB Atlas
 - Frontend: HTML5, CSS3, JavaScript, Bootstrap 5
