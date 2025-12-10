@@ -1,0 +1,26 @@
+<!-- cookies_banner.html -->
+<!-- Este archivo se incluye en base.html -->
+
+<div id="cookieConsentBanner" class="cookie-banner" style="display: none;">
+    <div class="cookie-banner-content">
+        <div class="cookie-banner-text">
+            <h5 class="mb-2">🍪 Uso de Cookies</h5>
+            <p class="mb-0">
+                Utilizamos cookies esenciales para el funcionamiento del sitio y cookies opcionales para mejorar tu experiencia. 
+                Puedes gestionar tus preferencias en cualquier momento.
+                <a href="{{ url_for('cookies_policy') }}" class="text-primary">Más información</a>
+            </p>
+        </div>
+        <div class="cookie-banner-buttons">
+            <button id="rejectCookiesBtn" class="btn btn-outline-secondary btn-sm">
+                Solo Esenciales
+            </button>
+            <button id="acceptCookiesBtn" class="btn btn-primary btn-sm ms-2">
+                Aceptar Todas
+            </button>
+            <button id="customizeCookiesBtn" class="btn btn-outline-primary btn-sm ms-2">
+                Personalizar
+            </button>
+        </div>
+    </div>
+</div>

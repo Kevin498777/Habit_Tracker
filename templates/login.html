@@ -21,12 +21,17 @@
                         <input type="password" class="form-control" id="password" name="password" 
                                placeholder="Ingresa tu contraseña" required>
                     </div>
-                    <form action="/action_page.php">
-                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                        <label for="vehicle1"> Recordar mis datos</label><br>
-                    </form>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                        <label class="form-check-label" for="remember">
+                            Recordar mis datos
+                        </label>
+                    </div>
+                    
                     <button type="submit" class="btn btn-primary w-100 mb-3">Iniciar Sesión</button>
                 </form>
+                
                 <div class="text-center">
                     <p class="text-muted mb-0">¿No tienes una cuenta?</p>
                     <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-sm mt-2">

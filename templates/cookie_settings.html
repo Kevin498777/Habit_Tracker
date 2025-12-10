@@ -1,0 +1,207 @@
+<!-- cookie_settings.html -->
+{% extends "base.html" %}
+
+{% block title %}Configuración de Cookies - HabitTracker{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card fade-in">
+            <div class="card-header">
+                <h3 class="card-title mb-0">⚙️ Configuración de Cookies</h3>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <p>Gestiona tus preferencias de cookies para personalizar tu experiencia en HabitTracker.</p>
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> Las cookies <strong>esenciales</strong> son necesarias para el funcionamiento del sitio y no pueden ser desactivadas.
+                    </div>
+                </div>
+
+                <form id="cookieSettingsForm" method="POST" action="{{ url_for('save_cookie_settings') }}">
+                    <!-- Preferencias del Usuario -->
+                    <div class="mb-4">
+                        <h5 class="mb-3">🍪 Preferencias de Cookies</h5>
+                        
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="essentialCookies" checked disabled>
+                            <label class="form-check-label" for="essentialCookies">
+                                <strong>Cookies Esenciales</strong>
+                                <small class="d-block text-muted">Necesarias para el funcionamiento del sitio (sesión, seguridad)</small>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="preferenceCookies" name="preference_cookies" 
+                                   {% if cookie_settings.get('preference_cookies', True) %}checked{% endif %}>
+                            <label class="form-check-label" for="preferenceCookies">
+                                <strong>Cookies de Preferencias</strong>
+                                <small class="d-block text-muted">Recordar ajustes y preferencias (tema, idioma, configuraciones)</small>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="analyticsCookies" name="analytics_cookies"
+                                   {% if cookie_settings.get('analytics_cookies', True) %}checked{% endif %}>
+                            <label class="form-check-label" for="analyticsCookies">
+                                <strong>Cookies Analíticas</strong>
+                                <small class="d-block text-muted">Ayudarnos a mejorar el sitio analizando el uso</small>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="functionalCookies" name="functional_cookies"
+                                   {% if cookie_settings.get('functional_cookies', True) %}checked{% endif %}>
+                            <label class="form-check-label" for="functionalCookies">
+                                <strong>Cookies de Funcionalidad</strong>
+                                <small class="d-block text-muted">Mejorar la experiencia (recordar hábitos frecuentes)</small>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Preferencias de Privacidad -->
+                    <div class="mb-4">
+                        <h5 class="mb-3">🔒 Preferencias de Privacidad</h5>
+                        
+                        <div class="mb-3">
+                            <label for="dataRetention" class="form-label">
+                                <strong>Retención de Datos</strong>
+                            </label>
+                            <select class="form-select" id="dataRetention" name="data_retention">
+                                <option value="30" {% if cookie_settings.get('data_retention') == '30' %}selected{% endif %}>30 días</option>
+                                <option value="90" {% if cookie_settings.get('data_retention') == '90' %}selected{% endif %}>3 meses</option>
+                                <option value="365" {% if cookie_settings.get('data_retention') == '365' %}selected{% endif %}>1 año</option>
+                                <option value="730" {% if cookie_settings.get('data_retention') == '730' or not cookie_settings.get('data_retention') %}selected{% endif %}>2 años</option>
+                            </select>
+                            <div class="form-text">Período de conservación de tus datos analíticos</div>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="anonymousData" name="anonymous_data"
+                                   {% if cookie_settings.get('anonymous_data', True) %}checked{% endif %}>
+                            <label class="form-check-label" for="anonymousData">
+                                <strong>Datos Anónimos</strong>
+                                <small class="d-block text-muted">Enviar datos de uso de forma anónima para mejoras</small>
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="thirdPartyCookies" name="third_party_cookies"
+                                   {% if cookie_settings.get('third_party_cookies', False) %}checked{% endif %}>
+                            <label class="form-check-label" for="thirdPartyCookies">
+                                <strong>Cookies de Terceros</strong>
+                                <small class="d-block text-muted">Permitir cookies de servicios externos (Google Analytics)</small>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Configuraciones de Seguridad -->
+                    <div class="mb-4">
+                        <h5 class="mb-3">🛡️ Configuraciones de Seguridad</h5>
+                        
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="secureCookies" name="secure_cookies" checked disabled>
+                            <label class="form-check-label" for="secureCookies">
+                                <strong>Cookies Seguras (HTTPS)</strong>
+                                <small class="d-block text-muted">Siempre activado para proteger tus datos</small>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="httpOnlyCookies" name="http_only_cookies" checked disabled>
+                            <label class="form-check-label" for="httpOnlyCookies">
+                                <strong>Cookies HTTP Only</strong>
+                                <small class="d-block text-muted">Protección contra XSS - siempre activado</small>
+                            </label>
+                        </div>
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="sameSiteCookies" name="same_site_cookies"
+                                   {% if cookie_settings.get('same_site_cookies', True) %}checked{% endif %}>
+                            <label class="form-check-label" for="sameSiteCookies">
+                                <strong>Protección SameSite</strong>
+                                <small class="d-block text-muted">Protección contra ataques CSRF (recomendado)</small>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Botones de acción -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{{ url_for('cookies_policy') }}" class="btn btn-outline-secondary">
+                            📄 Ver Política Completa
+                        </a>
+                        
+                        <div>
+                            <button type="button" id="rejectAllBtn" class="btn btn-danger me-2">
+                                ❌ Rechazar Todo
+                            </button>
+                            <button type="button" id="acceptAllBtn" class="btn btn-success me-2">
+                                ✅ Aceptar Todo
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                💾 Guardar Preferencias
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Información adicional -->
+                <div class="mt-4 pt-3 border-top">
+                    <h6>📊 Tus Datos Actuales</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="stat-item d-flex justify-content-between">
+                                <span>Preferencias guardadas:</span>
+                                <span class="code-badge">{{ 'Sí' if cookie_settings else 'No' }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="stat-item d-flex justify-content-between">
+                                <span>Última actualización:</span>
+                                <span class="code-badge">
+                                    {% if cookie_settings.get('last_updated') %}
+                                        {{ cookie_settings.last_updated.strftime('%d/%m/%Y') }}
+                                    {% else %}
+                                        Nunca
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Opciones avanzadas -->
+                <div class="mt-4">
+                    <button class="btn btn-outline-warning btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#advancedOptions">
+                        🔧 Opciones Avanzadas
+                    </button>
+                    
+                    <div class="collapse mt-2" id="advancedOptions">
+                        <div class="card card-body bg-dark">
+                            <h6>Gestión Avanzada</h6>
+                            <p class="small mb-3">Estas opciones afectan la experiencia técnica del sitio</p>
+                            
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="performanceCookies" name="performance_cookies"
+                                       {% if cookie_settings.get('performance_cookies', True) %}checked{% endif %}>
+                                <label class="form-check-label small" for="performanceCookies">
+                                    Cookies de Rendimiento
+                                </label>
+                            </div>
+                            
+                            <div class="d-grid gap-2 mt-2">
+                                <button type="button" id="clearCookiesBtn" class="btn btn-outline-danger btn-sm">
+                                    🗑️ Eliminar Todas las Cookies
+                                </button>
+                                <button type="button" id="exportSettingsBtn" class="btn btn-outline-info btn-sm">
+                                    📤 Exportar Configuración
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

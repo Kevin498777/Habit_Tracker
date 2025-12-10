@@ -420,3 +420,169 @@ footer {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
 }
+
+
+
+/* Estilos para el banner de cookies */
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(26, 27, 46, 0.95);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--border-color);
+    padding: 1rem;
+    z-index: 10000;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: all 0.3s ease;
+}
+
+.cookie-banner.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.cookie-banner-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.cookie-banner-text {
+    flex: 1;
+    padding-right: 1rem;
+}
+
+.cookie-banner-text h5 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.cookie-banner-text p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.cookie-banner-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Estilos para la tabla de cookies */
+.table-dark {
+    background: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+.table-dark th {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary-light);
+    border-color: var(--border-color);
+}
+
+.table-dark td {
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+}
+
+/* Estilos para switches personalizados */
+.form-switch .form-check-input {
+    width: 3em;
+    height: 1.5em;
+    background-color: var(--border-color);
+    border-color: var(--border-color);
+}
+
+.form-switch .form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-switch .form-check-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
+}
+
+/* Estilos para toasts */
+.cookie-toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    animation: slideIn 0.3s ease;
+}
+
+.cookie-toast-success {
+    border-left: 4px solid var(--success-color);
+}
+
+.cookie-toast-error {
+    border-left: 4px solid var(--danger-color);
+}
+
+.cookie-toast-info {
+    border-left: 4px solid var(--primary-color);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Estilos para opciones avanzadas */
+.collapse .card-body {
+    background: rgba(45, 55, 72, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cookie-banner-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .cookie-banner-text {
+        padding-right: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .cookie-banner-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .cookie-settings-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .cookie-settings-buttons .btn {
+        width: 100%;
+    }
+}
