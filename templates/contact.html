@@ -1,0 +1,135 @@
+<!-- templates/contact.html -->
+{% extends "base.html" %}
+
+{% block title %}Contacto - HabitTracker{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card fade-in">
+            <div class="card-header">
+                <h3 class="card-title mb-0">📞 Contacto</h3>
+            </div>
+            <div class="card-body">
+                <!-- Información de contacto -->
+                <div class="mb-4">
+                    <h5 class="mb-3">Información de Contacto</h5>
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <div class="d-flex align-items-center">
+                                <span class="me-3">📧</span>
+                                <div>
+                                    <strong>Email de Soporte:</strong>
+                                    <p class="mb-0">soporte@habittracker.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="d-flex align-items-center">
+                                <span class="me-3">⚖️</span>
+                                <div>
+                                    <strong>Asuntos Legales:</strong>
+                                    <p class="mb-0">legal@habittracker.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="d-flex align-items-center">
+                                <span class="me-3">🔒</span>
+                                <div>
+                                    <strong>Privacidad y Datos:</strong>
+                                    <p class="mb-0">privacidad@habittracker.com</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de contacto -->
+                <div class="mb-4">
+                    <h5 class="mb-3">Formulario de Contacto</h5>
+                    <form id="contactForm">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nombre Completo</label>
+                            <input type="text" class="form-control" id="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Asunto</label>
+                            <select class="form-select" id="subject" required>
+                                <option value="" selected disabled>Selecciona un asunto</option>
+                                <option value="support">Soporte Técnico</option>
+                                <option value="billing">Facturación y Pagos</option>
+                                <option value="privacy">Privacidad y Datos</option>
+                                <option value="legal">Asuntos Legales</option>
+                                <option value="suggestions">Sugerencias y Mejoras</option>
+                                <option value="other">Otro</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Mensaje</label>
+                            <textarea class="form-control" id="message" rows="5" required></textarea>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="privacyCheck" required>
+                            <label class="form-check-label" for="privacyCheck">
+                                He leído y acepto la <a href="{{ url_for('privacy_policy') }}">Política de Privacidad</a>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Enviar Mensaje</button>
+                    </form>
+                </div>
+
+                <!-- Información adicional -->
+                <div class="mt-4 pt-3 border-top">
+                    <h6>📋 Información Adicional</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="stat-item d-flex justify-content-between mb-2">
+                                <span>Tiempo de respuesta:</span>
+                                <span class="code-badge">24-48 horas</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="stat-item d-flex justify-content-between mb-2">
+                                <span>Horario de atención:</span>
+                                <span class="code-badge">L-V 9:00-18:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="mt-4">
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('privacy_policy') }}" class="btn btn-outline-primary">
+                            🔒 Política de Privacidad
+                        </a>
+                        <a href="{{ url_for('terms_of_service') }}" class="btn btn-outline-primary">
+                            📋 Términos y Condiciones
+                        </a>
+                        <a href="{{ url_for('index') }}" class="btn btn-success">
+                            🏠 Volver al Inicio
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script para el formulario de contacto -->
+<script>
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Aquí iría la lógica para enviar el formulario
+    // Por ahora, mostramos un mensaje de éxito
+    alert('¡Gracias por tu mensaje! Te responderemos en breve.');
+    this.reset();
+});
+</script>
+{% endblock %}

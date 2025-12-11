@@ -218,20 +218,26 @@ body {
 
 .alert-success {
   background: rgba(16, 185, 129, 0.1);
-  color: var(--success-color);
+  color: var(--text-primary);
   border-left: 4px solid var(--success-color);
 }
 
 .alert-danger {
   background: rgba(239, 68, 68, 0.1);
-  color: var(--danger-color);
+  color: var(--text-primary);
   border-left: 4px solid var(--danger-color);
 }
 
 .alert-info {
   background: rgba(99, 102, 241, 0.1);
-  color: var(--primary-light);
+  color: var(--text-primary);
   border-left: 4px solid var(--primary-color);
+}
+
+.alert-warning {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--text-primary);
+  border-left: 4px solid var(--warning-color);
 }
 
 /* Estadísticas */
@@ -244,6 +250,7 @@ body {
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
+  color: var(--text-primary);
 }
 
 .stats-card p {
@@ -269,6 +276,16 @@ footer {
   border-top: 1px solid var(--border-color);
   margin-top: 4rem;
   backdrop-filter: blur(10px);
+}
+
+footer a {
+  color: var(--primary-light) !important;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--primary-color) !important;
+  text-decoration: underline;
 }
 
 /* Animaciones */
@@ -331,6 +348,7 @@ footer {
 .stat-item {
     padding: 0.5rem 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
 }
 
 .stat-item:last-child {
@@ -420,8 +438,6 @@ footer {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
 }
-
-
 
 /* Estilos para el banner de cookies */
 .cookie-banner {
@@ -560,7 +576,7 @@ footer {
     background: rgba(45, 55, 72, 0.3);
 }
 
-/* Responsive */
+/* Responsive para banner de cookies */
 @media (max-width: 768px) {
     .cookie-banner-content {
         flex-direction: column;
@@ -585,4 +601,200 @@ footer {
     .cookie-settings-buttons .btn {
         width: 100%;
     }
+}
+
+/* ===== ESTILOS PARA LAS PÁGINAS LEGALES ===== */
+
+/* Títulos de sección - CORREGIDO */
+h4.text-primary {
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary) !important;
+}
+
+/* Mejoras para listas - CORREGIDO */
+.list-group-item.bg-transparent {
+    background: transparent !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Tablas legales - CORREGIDO */
+.table-bordered {
+    border-color: var(--border-color) !important;
+}
+
+.table-bordered th {
+    background: rgba(99, 102, 241, 0.1) !important;
+    font-weight: 600;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+.table-bordered td {
+    color: var(--text-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+/* Acordeón personalizado - CORREGIDO */
+.accordion-button {
+    background: rgba(99, 102, 241, 0.1) !important;
+    font-weight: 600;
+    color: var(--text-primary) !important;
+}
+
+.accordion-button:not(.collapsed) {
+    background: rgba(99, 102, 241, 0.2) !important;
+    color: var(--primary-color) !important;
+}
+
+.accordion-body {
+    background: var(--card-bg);
+    color: var(--text-primary);
+}
+
+/* Tarjetas de información - CORREGIDO */
+.card.border-primary {
+    border-color: var(--primary-color) !important;
+}
+
+.card.border-success {
+    border-color: var(--success-color) !important;
+}
+
+.card.border-danger {
+    border-color: var(--danger-color) !important;
+}
+
+/* Responsive para tablas - CORREGIDO */
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+    
+    .card-body ul,
+    .card-body ol {
+        padding-left: 1rem;
+        color: var(--text-primary);
+    }
+    
+    .card-body li {
+        color: var(--text-primary);
+    }
+}
+
+/* Mejoras de espaciado - CORREGIDO */
+section {
+    margin-bottom: 3rem;
+}
+
+section:last-of-type {
+    margin-bottom: 1.5rem;
+}
+
+/* Estilos para alertas legales - CORREGIDO */
+.alert h5.alert-heading {
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+}
+
+.alert ul {
+    margin-bottom: 0;
+    color: var(--text-primary);
+}
+
+.alert p {
+    color: var(--text-primary);
+}
+
+/* Estilos específicos para páginas legales - CORREGIDO */
+.stats-card.p-3 {
+    padding: 1.5rem !important;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    background: var(--card-bg);
+}
+
+.stats-card.p-3:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para tablas en páginas legales - CORREGIDO */
+.table tbody tr:hover {
+    background: rgba(99, 102, 241, 0.05);
+}
+
+/* Mejoras para acordeón en páginas legales - CORREGIDO */
+.accordion-item {
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+    background: var(--card-bg) !important;
+}
+
+.accordion-item:last-of-type {
+    margin-bottom: 0;
+}
+
+/* Estilos para enlaces en páginas legales - CORREGIDO */
+.alert a {
+    color: var(--primary-light) !important;
+    text-decoration: underline;
+}
+
+.alert a:hover {
+    color: var(--primary-color) !important;
+}
+
+/* Asegurar que todo el texto sea visible - CORREGIDO */
+.card-body p,
+.card-body h5,
+.card-body h6,
+.card-body li,
+.card-body span,
+.card-body small {
+    color: var(--text-primary) !important;
+}
+
+.card-body .text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* Corrección específica para las tablas de políticas */
+.table thead th {
+    color: var(--primary-light) !important;
+}
+
+.table tbody td {
+    color: var(--text-secondary) !important;
+}
+
+/* Estilos para listas dentro de tarjetas */
+.card ul,
+.card ol {
+    color: var(--text-primary);
+}
+
+.card ul li,
+.card ol li {
+    color: var(--text-primary);
+}
+
+/* Corrección para botones en páginas legales */
+.card-body .btn {
+    color: white !important;
+}
+
+/* Corrección para los badges */
+.badge {
+    color: white !important;
+}
+
+/* Estilos para los encabezados de las páginas legales */
+.card-title {
+    color: var(--text-primary) !important;
 }

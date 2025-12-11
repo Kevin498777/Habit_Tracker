@@ -1,0 +1,394 @@
+<!-- templates/terms_conditions.html -->
+{% extends "base.html" %}
+
+{% block title %}Términos y Condiciones - HabitTracker{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+        <div class="card fade-in">
+            <div class="card-header">
+                <div class="d-flex align-items-center">
+                    <span class="fs-4 me-2">📋</span>
+                    <h3 class="card-title mb-0">Términos y Condiciones de Uso</h3>
+                </div>
+                <p class="text-muted mb-0 mt-1">Última actualización: {{ current_date.strftime('%d de %B de %Y') }}</p>
+            </div>
+            
+            <div class="card-body">
+                <!-- Aviso importante -->
+                <div class="alert alert-warning mb-4">
+                    <h5 class="alert-heading">⚠️ Importante</h5>
+                    <p class="mb-0">Al registrarte y utilizar HabitTracker, aceptas estos Términos y Condiciones. Te recomendamos leerlos detenidamente.</p>
+                </div>
+
+                <!-- 1. Aceptación -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">1. Aceptación de los Términos</h4>
+                    <p>Al acceder y utilizar HabitTracker (el "Servicio"), aceptas quedar vinculado por estos Términos y Condiciones. Si no estás de acuerdo con alguna parte de estos términos, no podrás acceder al Servicio.</p>
+                    
+                    <div class="card bg-transparent border-0 mt-3">
+                        <div class="card-body">
+                            <h6 class="card-title">Información Esencial</h6>
+                            <ul class="mb-0">
+                                <li><strong>Servicio:</strong> HabitTracker - Aplicación web de seguimiento de hábitos</li>
+                                <li><strong>Proveedor:</strong> HabitTracker Technologies S.L.</li>
+                                <li><strong>Versión:</strong> {{ current_date.strftime('%Y.%m.%d') }}</li>
+                                <li><strong>Edad Mínima:</strong> 16 años</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Definiciones -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">2. Definiciones</h4>
+                    <p>Para los efectos de estos Términos:</p>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Término</th>
+                                    <th>Definición</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Servicio</strong></td>
+                                    <td>La aplicación web HabitTracker accesible en nuestro dominio</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Usuario</strong></td>
+                                    <td>Persona que se registra y utiliza el Servicio</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cuenta</strong></td>
+                                    <td>Perfil único creado por el Usuario para acceder al Servicio</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Contenido</strong></td>
+                                    <td>Hábitos, datos, texto e información introducida por el Usuario</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Suscripción</strong></td>
+                                    <td>Plan de pago para acceder a funcionalidades premium</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 3. Registro y Cuenta -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">3. Registro y Cuenta de Usuario</h4>
+                    
+                    <h5 class="mt-3">3.1 Requisitos de Registro</h5>
+                    <ul>
+                        <li>Debes tener al menos 16 años de edad</li>
+                        <li>Proporcionar información veraz, actual y completa</li>
+                        <li>Mantener la confidencialidad de tus credenciales</li>
+                        <li>Notificarnos inmediatamente cualquier uso no autorizado</li>
+                    </ul>
+                    
+                    <h5 class="mt-4">3.2 Responsabilidades de la Cuenta</h5>
+                    <div class="alert alert-info">
+                        <strong>Eres responsable de:</strong>
+                        <ul class="mb-0 mt-2">
+                            <li>Todas las actividades realizadas bajo tu cuenta</li>
+                            <li>Mantener tu contraseña segura y confidencial</li>
+                            <li>Cualquier daño o pérdida derivada del incumplimiento</li>
+                            <li>Actualizar tu información de contacto</li>
+                        </ul>
+                    </div>
+                    
+                    <h5 class="mt-4">3.3 Suspensión y Cancelación</h5>
+                    <p>Nos reservamos el derecho de suspender o cancelar cuentas que:</p>
+                    <ul>
+                        <li>Violen estos Términos</li>
+                        <li>Sean utilizadas para actividades ilegales</li>
+                        <li>Comprometan la seguridad del Servicio</li>
+                        <li>Sean inactivas por más de 24 meses</li>
+                    </ul>
+                </section>
+
+                <!-- 4. Uso del Servicio -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">4. Uso Aceptable del Servicio</h4>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="card border-success h-100">
+                                <div class="card-header bg-success text-white">
+                                    <h6 class="mb-0"> Conductas Permitidas</h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="mb-0">
+                                        <li>Crear y gestionar hábitos personales</li>
+                                        <li>Compartir tu progreso (opcional)</li>
+                                        <li>Utilizar el Servicio para desarrollo personal</li>
+                                        <li>Proporcionar feedback constructivo</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <div class="card border-danger h-100">
+                                <div class="card-header bg-danger text-white">
+                                    <h6 class="mb-0"> Conductas Prohibidas</h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="mb-0">
+                                        <li>Usar el Servicio para actividades ilegales</li>
+                                        <li>Intentar acceder a cuentas de otros usuarios</li>
+                                        <li>Interferir con la seguridad del Servicio</li>
+                                        <li>Publicar contenido ofensivo o inapropiado</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. Contenido del Usuario -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">5. Contenido del Usuario</h4>
+                    
+                    <h5 class="mt-3">5.1 Propiedad del Contenido</h5>
+                    <p>Eres el único propietario del contenido que creas en HabitTracker. Sin embargo, nos concedes una licencia mundial no exclusiva para:</p>
+                    <ul>
+                        <li>Almacenar y procesar tu contenido</li>
+                        <li>Mostrar tu contenido en el Servicio</li>
+                        <li>Realizar copias de seguridad</li>
+                        <li>Mejorar nuestros algoritmos (de forma anónima)</li>
+                    </ul>
+                    
+                    <h5 class="mt-4">5.2 Responsabilidad sobre el Contenido</h5>
+                    <div class="alert alert-warning">
+                        <strong>Aviso importante:</strong> Eres el único responsable del contenido que subas al Servicio. Asegúrate de que:
+                        <ul class="mt-2 mb-0">
+                            <li>No infringe derechos de terceros</li>
+                            <li>No es ofensivo, difamatorio o ilegal</li>
+                            <li>No contiene información sensible no protegida</li>
+                            <li>Cumple con las leyes aplicables</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- 6. Propiedad Intelectual -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">6. Propiedad Intelectual</h4>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title">💡 Derechos de HabitTracker</h6>
+                                    <p class="mb-0">El código fuente, diseño, logotipos, gráficos y todo el software relacionado con el Servicio son propiedad exclusiva de HabitTracker Technologies S.L. y están protegidos por leyes de propiedad intelectual.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title">📝 Licencia de Uso</h6>
+                                    <p class="mb-0">Te concedemos una licencia limitada, no exclusiva, intransferible y revocable para utilizar el Servicio según estos Términos. Esta licencia no incluye el derecho a modificar, copiar o distribuir el Servicio.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7. Limitación de Responsabilidad -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">7. Limitación de Responsabilidad</h4>
+                    
+                    <div class="alert alert-danger">
+                        <h5 class="alert-heading">🚫 Exclusiones y Limitaciones</h5>
+                        <p>En la máxima medida permitida por la ley aplicable:</p>
+                        <ul class="mb-0">
+                            <li>El Servicio se proporciona "tal cual" y "según disponibilidad"</li>
+                            <li>No garantizamos la disponibilidad ininterrumpida o libre de errores</li>
+                            <li>No somos responsables por pérdidas indirectas o consecuentes</li>
+                            <li>Nuestra responsabilidad máxima es el importe pagado por el usuario en los últimos 12 meses</li>
+                        </ul>
+                    </div>
+                    
+                    <h5 class="mt-4">7.1 Excepciones</h5>
+                    <p>Las limitaciones anteriores no se aplican en caso de:</p>
+                    <ul>
+                        <li>Muerte o lesiones personales por nuestra negligencia</li>
+                        <li>Fraude o declaraciones falsas</li>
+                        <li>Incumplimiento de garantías de consumidor</li>
+                        <li>Incumplimiento de obligaciones esenciales del contrato</li>
+                    </ul>
+                </section>
+
+                <!-- 8. Suscripciones y Pagos -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">8. Suscripciones y Pagos</h4>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">💰 Planes Disponibles</h6>
+                                    <ul class="mb-0">
+                                        <li><strong>Gratuito:</strong> Funcionalidades básicas</li>
+                                        <li><strong>Premium:</strong> €9.99/mes - Todas las funciones</li>
+                                        <li><strong>Anual:</strong> €99.99/año - Ahorro del 17%</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">🔄 Renovación y Cancelación</h6>
+                                    <ul class="mb-0">
+                                        <li>Renovación automática al final del período</li>
+                                        <li>Cancelación en cualquier momento</li>
+                                        <li>Sin reembolsos por períodos no utilizados</li>
+                                        <li>Facturación recurrente hasta cancelación</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 9. Terminación -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">9. Terminación</h4>
+                    
+                    <h5 class="mt-3">9.1 Por el Usuario</h5>
+                    <p>Puedes cancelar tu cuenta en cualquier momento desde la configuración de tu perfil. Tras la cancelación:</p>
+                    <ul>
+                        <li>Tu acceso al Servicio se suspenderá inmediatamente</li>
+                        <li>Tus datos se conservarán durante 30 días</li>
+                        <li>Posteriormente, se eliminarán permanentemente</li>
+                        <li>Puedes solicitar eliminación inmediata</li>
+                    </ul>
+                    
+                    <h5 class="mt-4">9.2 Por HabitTracker</h5>
+                    <p>Podemos suspender o terminar tu acceso al Servicio si:</p>
+                    <ul>
+                        <li>Incumples estos Términos</li>
+                        <li>Realizas actividades fraudulentas</li>
+                        <li>Pones en riesgo la seguridad del Servicio</li>
+                        <li>No pagas las suscripciones adeudadas</li>
+                    </ul>
+                </section>
+
+                <!-- 10. Ley Aplicable y Jurisdicción -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">10. Ley Aplicable y Jurisdicción</h4>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">⚖️ Información Legal</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Ley Aplicable:</strong><br>
+                                    Legislación española</p>
+                                    <p><strong>Foro:</strong><br>
+                                    Tribunales de Madrid (España)</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Idioma:</strong><br>
+                                    Español (versión oficial)</p>
+                                    <p><strong>Resolución de Conflictos:</strong><br>
+                                    Negociación directa > Mediación</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 11. Modificaciones -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">11. Modificaciones de los Términos</h4>
+                    
+                    <div class="alert alert-info">
+                        <h5 class="alert-heading">🔄 Proceso de Actualización</h5>
+                        <p>Nos reservamos el derecho de modificar estos Términos. Cuando lo hagamos:</p>
+                        <ul class="mb-0">
+                            <li>Actualizaremos la fecha de "Última actualización"</li>
+                            <li>Te notificaremos por email (si es un cambio significativo)</li>
+                            <li>Publicaremos un aviso en el Servicio durante 30 días</li>
+                            <li>El uso continuado constituye aceptación de los nuevos términos</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- 12. Contacto -->
+                <section class="mb-4">
+                    <h4 class="text-primary mb-3">12. Contacto</h4>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="text-center p-3 border rounded">
+                                <div class="mb-2">📧</div>
+                                <h6>Soporte Técnico</h6>
+                                <p class="mb-0"><small>soporte@habittracker.com</small></p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <div class="text-center p-3 border rounded">
+                                <div class="mb-2">⚖️</div>
+                                <h6>Asuntos Legales</h6>
+                                <p class="mb-0"><small>legal@habittracker.com</small></p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <div class="text-center p-3 border rounded">
+                                <div class="mb-2">🏢</div>
+                                <h6>Dirección Postal</h6>
+                                <p class="mb-0"><small>Calle Tecnología 123<br>28001 Madrid, España</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Aceptación -->
+                <div class="border-top pt-4 mt-4">
+                    <div class="alert alert-success">
+                        <h5 class="alert-heading">✅ Aceptación de los Términos</h5>
+                        <p class="mb-0">Al hacer clic en "Registrarse" o al utilizar continuamente el Servicio, confirmas que:</p>
+                        <ul class="mt-2 mb-0">
+                            <li>Has leído y comprendido estos Términos</li>
+                            <li>Eres mayor de 16 años</li>
+                            <li>Aceptas quedar vinculado por estos Términos</li>
+                            <li>Consientes nuestra <a href="{{ url_for('privacy_policy') }}">Política de Privacidad</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{{ url_for('privacy_policy') }}" class="btn btn-outline-primary">
+                        🔒 Ver Política de Privacidad
+                    </a>
+                    <div>
+                        <a href="{{ url_for('register') }}" class="btn btn-success me-2">
+                            ✅ Aceptar y Registrarse
+                        </a>
+                        <a href="{{ url_for('index') }}" class="btn btn-primary">
+                            🏠 Volver al Inicio
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-footer text-muted text-center">
+                <small>Documento ID: TC-{{ current_date.strftime('%Y%m%d') }} | Versión: 3.2 | Cumple LSSI y LOPDGDD</small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

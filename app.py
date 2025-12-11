@@ -641,6 +641,8 @@ def clear_cookies():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# app.py - Secciones para las nuevas rutas
+
 @app.route('/privacy-policy')
 def privacy_policy():
     """Página de política de privacidad"""
@@ -648,8 +650,14 @@ def privacy_policy():
 
 @app.route('/terms-of-service')
 def terms_of_service():
-    """Página de términos de servicio"""
-    return render_template('terms_of_service.html', current_date=datetime.now())
+    """Página de términos y condiciones"""
+    return render_template('terms_conditions.html', current_date=datetime.now())
+
+# También asegúrate de tener esta ruta para contacto
+@app.route('/contact')
+def contact():
+    """Página de contacto"""
+    return render_template('contact.html', current_date=datetime.now())
 
 @app.route('/api/cookies/status')
 def cookie_status():

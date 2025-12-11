@@ -1,3 +1,4 @@
+<!-- templates/privacy_policy.html -->
 {% extends "base.html" %}
 
 {% block title %}Política de Privacidad - HabitTracker{% endblock %}
@@ -7,11 +8,359 @@
     <div class="col-md-10 col-lg-8">
         <div class="card fade-in">
             <div class="card-header">
-                <h3 class="card-title mb-0">🔒 Política de Privacidad</h3>
+                <div class="d-flex align-items-center">
+                    <span class="fs-4 me-2">🔒</span>
+                    <h3 class="card-title mb-0">Política de Privacidad</h3>
+                </div>
+                <p class="text-muted mb-0 mt-1">Última actualización: {{ current_date.strftime('%d de %B de %Y') }}</p>
             </div>
+            
             <div class="card-body">
-                <!-- Contenido de política de privacidad -->
-                <p>Explicar cómo se manejan los datos personales...</p>
+                <!-- Introducción -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">1. Introducción</h4>
+                    <p>En <strong>HabitTracker</strong>, valoramos y respetamos tu privacidad. Esta Política de Privacidad describe cómo recopilamos, usamos, almacenamos y protegemos tu información personal cuando utilizas nuestra aplicación de seguimiento de hábitos.</p>
+                    <p>Al utilizar nuestro servicio, aceptas las prácticas descritas en esta política. Si no estás de acuerdo con algún aspecto, te recomendamos que no utilices nuestra aplicación.</p>
+                </section>
+
+                <!-- Responsable del Tratamiento -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">2. Responsable del Tratamiento</h4>
+                    <div class="card bg-transparent border-0">
+                        <div class="card-body">
+                            <p class="mb-0"><strong>HabitTracker</strong><br>
+                            Email: privacidad@habittracker.com<br>
+                            Dirección: Calle Galeana 13, Michoacan <br>
+                            CIF: A-12345678</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Información que Recopilamos -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">3. Información que Recopilamos</h4>
+                    <p>Recopilamos diferentes tipos de información para proporcionarte nuestros servicios:</p>
+                    
+                    <h5 class="mt-4">3.1 Información que nos proporcionas directamente</h5>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item bg-transparent">
+                            <strong>Datos de registro:</strong> Nombre de usuario, correo electrónico y contraseña
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <strong>Datos de hábitos:</strong> Nombre, descripción y seguimiento de tus hábitos
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <strong>Datos de actividad:</strong> Fechas de completado, estadísticas y progreso
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <strong>Preferencias:</strong> Configuración de notificaciones y preferencias de visualización
+                        </li>
+                    </ul>
+
+                    <h5 class="mt-4">3.2 Información recopilada automáticamente</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Tipo de Dato</th>
+                                    <th>Finalidad</th>
+                                    <th>Ejemplo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Datos de uso</td>
+                                    <td>Mejorar la experiencia del usuario</td>
+                                    <td>Tiempo de sesión, páginas visitadas</td>
+                                </tr>
+                                <tr>
+                                    <td>Datos técnicos</td>
+                                    <td>Diagnóstico y soporte técnico</td>
+                                    <td>Versión del navegador, sistema operativo</td>
+                                </tr>
+                                <tr>
+                                    <td>Cookies</td>
+                                    <td>Funcionalidad básica y preferencias</td>
+                                    <td>Preferencias de idioma, sesión de usuario</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Finalidades del Tratamiento -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">4. Finalidades del Tratamiento</h4>
+                    <p>Utilizamos tu información para las siguientes finalidades:</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100 border-primary">
+                                <div class="card-body">
+                                    <h5 class="card-title">🎯 Finalidad Principal</h5>
+                                    <ul class="mb-0">
+                                        <li>Proporcionar el servicio de seguimiento de hábitos</li>
+                                        <li>Gestionar tu cuenta de usuario</li>
+                                        <li>Mostrar tu progreso y estadísticas</li>
+                                        <li>Enviar notificaciones y recordatorios</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100 border-success">
+                                <div class="card-body">
+                                    <h5 class="card-title">📈 Mejora del Servicio</h5>
+                                    <ul class="mb-0">
+                                        <li>Analizar patrones de uso</li>
+                                        <li>Desarrollar nuevas funcionalidades</li>
+                                        <li>Personalizar tu experiencia</li>
+                                        <li>Optimizar el rendimiento</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info mt-3">
+                        <strong>🔍 Base legal:</strong> El tratamiento se basa en tu consentimiento (art. 6.1.a RGPD) y en la ejecución del contrato (art. 6.1.b RGPD).
+                    </div>
+                </section>
+
+                <!-- Compartición de Datos -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">5. Compartición de Datos</h4>
+                    <p><strong>No vendemos ni alquilamos tu información personal a terceros.</strong> Solo compartimos datos en las siguientes situaciones:</p>
+                    
+                    <div class="row text-center">
+                        <div class="col-md-4 mb-3">
+                            <div class="stats-card p-3">
+                                <h3 class="text-warning">1</h3>
+                                <p class="mb-0">Proveedores de Servicios</p>
+                                <small>Hosting, email, analíticas</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="stats-card p-3">
+                                <h3 class="text-danger">2</h3>
+                                <p class="mb-0">Requerimientos Legales</p>
+                                <small>Cumplimiento de leyes</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="stats-card p-3">
+                                <h3 class="text-success">3</h3>
+                                <p class="mb-0">Transferencias Empresariales</p>
+                                <small>Fusiones o adquisiciones</small>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Derechos del Usuario -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">6. Tus Derechos</h4>
+                    <p>Como usuario, tienes los siguientes derechos respecto a tus datos personales:</p>
+                    
+                    <div class="accordion" id="rightsAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#right1">
+                                    📋 Derecho de Acceso
+                                </button>
+                            </h2>
+                            <div id="right1" class="accordion-collapse collapse show" data-bs-parent="#rightsAccordion">
+                                <div class="accordion-body">
+                                    Puedes solicitar una copia de los datos personales que tenemos sobre ti.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#right2">
+                                    ✏️ Derecho de Rectificación
+                                </button>
+                            </h2>
+                            <div id="right2" class="accordion-collapse collapse" data-bs-parent="#rightsAccordion">
+                                <div class="accordion-body">
+                                    Puedes solicitar la corrección de datos inexactos o incompletos.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#right3">
+                                    🗑️ Derecho de Supresión
+                                </button>
+                            </h2>
+                            <div id="right3" class="accordion-collapse collapse" data-bs-parent="#rightsAccordion">
+                                <div class="accordion-body">
+                                    Puedes solicitar la eliminación de tus datos personales ("derecho al olvido").
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#right4">
+                                    ⏸️ Derecho de Oposición
+                                </button>
+                            </h2>
+                            <div id="right4" class="accordion-collapse collapse" data-bs-parent="#rightsAccordion">
+                                <div class="accordion-body">
+                                    Puedes oponerte al tratamiento de tus datos en determinadas circunstancias.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#right5">
+                                    📤 Derecho de Portabilidad
+                                </button>
+                            </h2>
+                            <div id="right5" class="accordion-collapse collapse" data-bs-parent="#rightsAccordion">
+                                <div class="accordion-body">
+                                    Puedes recibir tus datos en un formato estructurado y transferirlos a otro responsable.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning mt-3">
+                        <strong>⚖️ Ejercicio de derechos:</strong> Para ejercer tus derechos, envía un email a <a href="mailto:privacidad@habittracker.com">privacidad@habittracker.com</a> con tu solicitud. Responderemos en un plazo máximo de 30 días.
+                    </div>
+                </section>
+
+                <!-- Retención de Datos -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">7. Período de Retención</h4>
+                    <p>Conservamos tus datos personales durante el tiempo necesario para cumplir con las finalidades descritas:</p>
+                    
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Tipo de Dato</th>
+                                    <th>Período de Retención</th>
+                                    <th>Criterio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Datos de cuenta activa</td>
+                                    <td>Mientras la cuenta esté activa</td>
+                                    <td>Necesario para el servicio</td>
+                                </tr>
+                                <tr>
+                                    <td>Datos de hábitos</td>
+                                    <td>3 años tras última actividad</td>
+                                    <td>Interés legítimo y análisis</td>
+                                </tr>
+                                <tr>
+                                    <td>Datos de facturación</td>
+                                    <td>10 años</td>
+                                    <td>Obligación legal</td>
+                                </tr>
+                                <tr>
+                                    <td>Cookies</td>
+                                    <td>Ver <a href="{{ url_for('cookies_policy') }}">Política de Cookies</a></td>
+                                    <td>Preferencias del usuario</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Seguridad -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">8. Medidas de Seguridad</h4>
+                    <p>Implementamos medidas técnicas y organizativas para proteger tus datos:</p>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="text-center p-3 border rounded">
+                                <div class="mb-2">🔐</div>
+                                <h6>Cifrado de Datos</h6>
+                                <small class="text-muted">AES-256 para datos en tránsito y en reposo</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center p-3 border rounded">
+                                <div class="mb-2">🛡️</div>
+                                <h6>Autenticación Segura</h6>
+                                <small class="text-muted">Contraseñas con hash bcrypt</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center p-3 border rounded">
+                                <div class="mb-2">📊</div>
+                                <h6>Auditorías Regulares</h6>
+                                <small class="text-muted">Revisiones de seguridad periódicas</small>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Contacto y Reclamaciones -->
+                <section class="mb-5">
+                    <h4 class="text-primary mb-3">9. Contacto y Reclamaciones</h4>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">📧 Contacto</h5>
+                                    <p class="mb-1"><strong>Email:</strong> privacidad@habittracker.com</p>
+                                    <p class="mb-1"><strong>Teléfono:</strong> +34 900 123 456</p>
+                                    <p class="mb-0"><strong>Horario:</strong> L-V 9:00-18:00</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">⚖️ Autoridad de Control</h5>
+                                    <p>Si consideras que hemos vulnerado tus derechos, puedes presentar una reclamación ante la <a href="https://www.aepd.es" target="_blank">Agencia Española de Protección de Datos</a>.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Cambios en la Política -->
+                <section class="mb-4">
+                    <h4 class="text-primary mb-3">10. Cambios en esta Política</h4>
+                    <p>Podemos actualizar esta política periódicamente. Te notificaremos sobre cambios significativos mediante:</p>
+                    <ul>
+                        <li>Notificación en la aplicación</li>
+                        <li>Email a la dirección registrada</li>
+                        <li>Actualización de la fecha en esta página</li>
+                    </ul>
+                    <p class="mb-0">El uso continuado del servicio tras los cambios constituye la aceptación de la política actualizada.</p>
+                </section>
+
+                <!-- Botones de acción -->
+                <div class="border-top pt-4 mt-4">
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('terms_of_service') }}" class="btn btn-outline-primary">
+                            📋 Ver Términos y Condiciones
+                        </a>
+                        <div>
+                            <a href="{{ url_for('cookie_settings') }}" class="btn btn-primary me-2">
+                                🍪 Configurar Cookies
+                            </a>
+                            <a href="{{ url_for('index') }}" class="btn btn-success">
+                                🏠 Volver al Inicio
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-footer text-muted text-center">
+                <small>Documento ID: PP-{{ current_date.strftime('%Y%m%d') }} | Versión: 2.1 | RGPD Compliant</small>
             </div>
         </div>
     </div>
