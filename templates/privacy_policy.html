@@ -266,7 +266,7 @@
                                 </tr>
                                 <tr>
                                     <td>Cookies</td>
-                                    <td>Ver <a href="{{ url_for('cookies_policy') }}">Política de Cookies</a></td>
+                                    <td>Ver <a href="{{ url_for('cookies.cookies_policy') }}">Política de Cookies</a></td>
                                     <td>Preferencias del usuario</td>
                                 </tr>
                             </tbody>
@@ -344,14 +344,14 @@
                 <!-- Botones de acción -->
                 <div class="border-top pt-4 mt-4">
                     <div class="d-flex justify-content-between">
-                        <a href="{{ url_for('terms_of_service') }}" class="btn btn-outline-primary">
+                        <a href="{{ url_for('pages.terms_of_service') }}" class="btn btn-outline-primary">
                             📋 Ver Términos y Condiciones
                         </a>
                         <div>
-                            <a href="{{ url_for('cookie_settings') }}" class="btn btn-primary me-2">
+                            <a href="{{ url_for('cookies.cookie_settings') }}" class="btn btn-primary me-2">
                                 🍪 Configurar Cookies
                             </a>
-                            <a href="{{ url_for('index') }}" class="btn btn-success">
+                            <a href="{{ url_for('habits.index') }}" class="btn btn-success">
                                 🏠 Volver al Inicio
                             </a>
                         </div>

@@ -364,21 +364,21 @@
                             <li>Has leído y comprendido estos Términos</li>
                             <li>Eres mayor de 16 años</li>
                             <li>Aceptas quedar vinculado por estos Términos</li>
-                            <li>Consientes nuestra <a href="{{ url_for('privacy_policy') }}">Política de Privacidad</a></li>
+                            <li>Consientes nuestra <a href="{{ url_for('pages.privacy_policy') }}">Política de Privacidad</a></li>
                         </ul>
                     </div>
                 </div>
 
                 <!-- Botones de acción -->
                 <div class="d-flex justify-content-between mt-4">
-                    <a href="{{ url_for('privacy_policy') }}" class="btn btn-outline-primary">
+                    <a href="{{ url_for('pages.privacy_policy') }}" class="btn btn-outline-primary">
                         🔒 Ver Política de Privacidad
                     </a>
                     <div>
-                        <a href="{{ url_for('register') }}" class="btn btn-success me-2">
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-success me-2">
                             ✅ Aceptar y Registrarse
                         </a>
-                        <a href="{{ url_for('index') }}" class="btn btn-primary">
+                        <a href="{{ url_for('habits.index') }}" class="btn btn-primary">
                             🏠 Volver al Inicio
                         </a>
                     </div>
