@@ -1,8 +1,8 @@
 # app.py — Punto de entrada principal
+# app.py
 from flask import Flask
 from config.settings import Config
 from config.database import init_db
-from config.metrics import init_metrics
 from routes.auth import auth_bp
 from routes.habits import habits_bp
 from routes.cookies import cookies_bp
@@ -10,6 +10,7 @@ from routes.pages import pages_bp
 from routes.api import api_bp
 from services.security import register_security_middleware
 
+#from config.metrics import init_metrics
 
 def create_app():
     """Application Factory — patrón recomendado por Flask."""
@@ -20,7 +21,7 @@ def create_app():
     init_db(app)
 
     # Inicializar métricas Prometheus
-    init_metrics(app)
+    #init_metrics(app)
 
     # Registrar middleware de seguridad (headers HTTP + CSRF logging)
     register_security_middleware(app)

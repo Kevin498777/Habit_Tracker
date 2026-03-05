@@ -1,2 +1,13 @@
-venv\Scripts\activate
+# 1. Crear el entorno virtual
+python -m venv venvFB
+
+# 2. Activarlo
+venvFB\Scripts\activate
+
+# 3. Instalar dependencias
+pip install -r requirements.txt
+```
+
 deactivate
+
+python app.py

@@ -1,41 +1,41 @@
-# config/database.py — Conexión y acceso a MongoDB
-from flask import current_app, g
-from pymongo import MongoClient
+# config/database.py — Conexión y acceso a Firebase Firestore
+import os
+import firebase_admin
+from firebase_admin import credentials, firestore
 
-
-def get_db():
-    """Devuelve la instancia de base de datos del contexto actual de Flask."""
-    if 'db' not in g:
-        client = MongoClient(current_app.config['MONGODB_URI'])
-        g.db     = client['habit_tracker']
-        g.client = client
-    return g.db
+# Variable global del cliente Firestore
+_db = None
 
 
 def init_db(app):
-    """Registra el teardown para cerrar la conexión al finalizar cada request."""
+    """Inicializa Firebase Admin SDK al arrancar la app."""
+    global _db
 
-    @app.teardown_appcontext
-    def close_db(error=None):
-        client = g.pop('client', None)
-        if client is not None:
-            client.close()
+    cred_path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+        'firebase-credentials.json'
+    )
 
-    # Verificar conexión al arrancar
-    with app.app_context():
-        try:
-            client = MongoClient(app.config['MONGODB_URI'])
-            client.admin.command('ping')
-            print("OK — Conectado a MongoDB exitosamente.")
-            client.close()
-        except Exception as e:
-            print(f"ERROR — No se pudo conectar a MongoDB: {e}")
+    try:
+        cred = credentials.Certificate(cred_path)
+        firebase_admin.initialize_app(cred)
+        _db = firestore.client()
+        print("OK — Conectado a Firebase Firestore exitosamente.")
+    except Exception as e:
+        print(f"ERROR — No se pudo conectar a Firestore: {e}")
+        _db = None
 
 
-# ── Accesos rápidos a colecciones ──────────────────────────────────────────────
+def get_db():
+    """Devuelve el cliente de Firestore."""
+    return _db
+
+
 def get_users_collection():
-    return get_db()['users']
+    """Devuelve referencia a la colección 'users'."""
+    return _db.collection('users') if _db else None
 
 
 def get_habits_collection():
-    return get_db()['habits']
+    """Devuelve referencia a la colección 'habits'."""
+    return _db.collection('habits') if _db else None

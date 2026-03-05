@@ -1,4 +1,4 @@
-# routes/auth.py — Blueprint de autenticación (registro, login, logout)
+# routes/auth.py — Blueprint de autenticación adaptado a Firestore
 from datetime import datetime
 
 from flask import (
@@ -12,6 +12,36 @@ from services.cookies import CookieConfig
 from services.security import is_valid_email, validate_csrf_token
 
 auth_bp = Blueprint('auth', __name__)
+
+
+def _find_user_by_username_or_email(username: str):
+    """Busca usuario por username o email en Firestore."""
+    users = get_users_collection()
+
+    # Buscar por username
+    docs = users.where('username', '==', username).limit(1).stream()
+    for doc in docs:
+        data = doc.to_dict()
+        data['_id'] = doc.id
+        return data
+
+    # Buscar por email
+    docs = users.where('email', '==', username).limit(1).stream()
+    for doc in docs:
+        data = doc.to_dict()
+        data['_id'] = doc.id
+        return data
+
+    return None
+
+
+def _find_user_by_field(field: str, value: str):
+    """Busca si ya existe un usuario con ese campo/valor."""
+    users = get_users_collection()
+    docs = users.where(field, '==', value).limit(1).stream()
+    for doc in docs:
+        return doc.to_dict()
+    return None
 
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
@@ -47,27 +77,35 @@ def register():
             flash('Por favor ingresa un email válido.', 'error')
             return render_template('register.html')
 
-        users = get_users_collection()
-
         try:
-            if users.find_one({'$or': [{'username': username}, {'email': email}]}):
-                flash('El nombre de usuario o email ya están en uso.', 'error')
+            users = get_users_collection()
+
+            # Verificar duplicados
+            if _find_user_by_field('username', username):
+                flash('El nombre de usuario ya está en uso.', 'error')
+                return render_template('register.html')
+
+            if _find_user_by_field('email', email):
+                flash('El email ya está registrado.', 'error')
                 return render_template('register.html')
 
             cookie_settings = CookieConfig.DEFAULT_SETTINGS.copy()
-            cookie_settings['cookie_consent_date'] = datetime.now()
+            cookie_settings['cookie_consent_date'] = datetime.now().isoformat()
 
-            user = {
+            user_data = {
                 'username':        username,
                 'email':           email,
                 'password':        generate_password_hash(password),
-                'created_at':      datetime.now(),
+                'created_at':      datetime.now().isoformat(),
                 'last_login':      None,
                 'cookie_settings': cookie_settings,
             }
-            result = users.insert_one(user)
 
-            session['user_id']         = str(result.inserted_id)
+            # Firestore genera el ID automáticamente
+            doc_ref = users.add(user_data)
+            user_id = doc_ref[1].id
+
+            session['user_id']         = user_id
             session['username']        = username
             session['email']           = email
             session['cookie_settings'] = cookie_settings
@@ -101,22 +139,18 @@ def login():
             return render_template('login.html')
 
         try:
-            users = get_users_collection()
-            user  = users.find_one({
-                '$or': [{'username': username}, {'email': username}]
-            })
+            user = _find_user_by_username_or_email(username)
 
             if user and check_password_hash(user['password'], password):
-                # Actualizar último login (no-crítico)
+                # Actualizar último login
                 try:
-                    users.update_one(
-                        {'_id': user['_id']},
-                        {'$set': {'last_login': datetime.now()}}
-                    )
+                    get_users_collection().document(user['_id']).update({
+                        'last_login': datetime.now().isoformat()
+                    })
                 except Exception:
                     pass
 
-                session['user_id']  = str(user['_id'])
+                session['user_id']  = user['_id']
                 session['username'] = user['username']
                 session['email']    = user['email']
                 session['cookie_settings'] = user.get(
@@ -131,7 +165,7 @@ def login():
 
         except Exception as e:
             print(f"ERROR en login: {e}")
-            flash('Error al procesar el inicio de sesión. Intenta nuevamente.', 'error')
+            flash('Error al procesar el inicio de sesión.', 'error')
 
     return render_template('login.html')
 

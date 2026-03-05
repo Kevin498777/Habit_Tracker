@@ -1,6 +1,5 @@
-#Kevin Brian Ibarra Pineda
-#
-#
+# Kevin Brian Ibarra Pineda
+# HabitTracker — .gitignore
 
 # ============================================
 # 🐍 Python / Flask
@@ -12,52 +11,17 @@ __pycache__/
 *.pyo
 *.pyd
 *.pkl
+*.pdb
+.Python
 
-# Entorno virtual
+# Entornos virtuales
 venv/
+venvFB/
 env/
 ENV/
 .venv/
-.env
-.env.production
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-env/
-# Configuración local o sensible
-.env
-config.py
 
-# Archivos de log o caché
-*.log
-*.bak
-*.tmp
-*.swp
-*.sqlite3
-instance/
-
-# ============================================
-# 💻 Editor y sistema operativo
-# ============================================
-
-# Visual Studio Code
-.vscode/
-.settings/
-.history/
-*.code-workspace
-
-# MacOS y Windows
-.DS_Store
-Thumbs.db
-desktop.ini
-
-# ============================================
-# 📦 Dependencias y compilaciones
-# ============================================
-
-# Archivos de instalación
+# Distribución / empaquetado
 build/
 dist/
 *.egg-info/
@@ -65,28 +29,57 @@ dist/
 pip-wheel-metadata/
 
 # ============================================
-# 🌐 Proyecto HabitTracker específico
+# 🔒 Archivos sensibles
 # ============================================
 
-# Archivos de respaldo/exportación
+# Variables de entorno (contienen credenciales)
+.env
+.env.production
+.env.local
+.env.*
+
+# Credenciales de Firebase
+firebase-credentials.json
+
+# ============================================
+# 📦 Base de datos y caché
+# ============================================
+
+*.sqlite3
+*.log
+*.bak
+*.tmp
+*.swp
+instance/
+.cache/
+
+# ============================================
+# 💻 Editores y sistema operativo
+# ============================================
+
+# Visual Studio Code
+.vscode/
+.history/
+*.code-workspace
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# ============================================
+# 🌐 HabitTracker — específico del proyecto
+# ============================================
+
+# Exportaciones generadas
 static/exports/
 
-# Capturas o documentación temporal
-docs/*.tmp
-docs/*.bak
-
-# Archivos de prueba locales
-test_*.py
-tests/__pycache__/
-
-# ============================================
-# 🔒 Otros
-# ============================================
-
-# JSON de backups generados
-*.json
+# Archivos comprimidos
 *.zip
 *.tar.gz
 
-# Carpeta de caché
-.cache/
+# Documentación temporal
+docs/*.tmp
+docs/*.bak

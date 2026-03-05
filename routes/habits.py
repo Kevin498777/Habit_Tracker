@@ -1,11 +1,10 @@
-# routes/habits.py — Blueprint de gestión de hábitos (CRUD + dashboard)
+# routes/habits.py — Blueprint de hábitos adaptado a Firestore
 from datetime import datetime, timedelta
 
 from flask import (
     Blueprint, render_template, request,
     redirect, url_for, flash, session
 )
-from bson import ObjectId
 
 from config.database import get_habits_collection, get_users_collection
 from services.security import login_required, validate_csrf_token
@@ -13,26 +12,49 @@ from services.security import login_required, validate_csrf_token
 habits_bp = Blueprint('habits', __name__)
 
 
+def _get_user_habits(user_id: str) -> list:
+    """Obtiene todos los hábitos del usuario ordenados por fecha."""
+    docs = (
+        get_habits_collection()
+        .where('user_id', '==', user_id)
+        .stream()
+    )
+    habits = []
+    for doc in docs:
+        data = doc.to_dict()
+        data['_id'] = doc.id
+
+        # Convertir created_at de string a datetime para el template
+        if isinstance(data.get('created_at'), str):
+            try:
+                data['created_at'] = datetime.fromisoformat(data['created_at'])
+            except ValueError:
+                data['created_at'] = datetime.now()
+
+        habits.append(data)
+
+    habits.sort(key=lambda h: h.get('created_at', datetime.now()), reverse=True)
+    return habits
+
+
 @habits_bp.route('/')
 @login_required
 def index():
     """Dashboard principal con listado y estadísticas de hábitos."""
-    habits          = []
-    today_completed = 0
-    total_habits    = 0
-    completion_rate = 0.0
+    habits           = []
+    today_completed  = 0
+    total_habits     = 0
+    completion_rate  = 0.0
     week_completions = 0
     today = datetime.now().strftime('%Y-%m-%d')
 
     try:
-        habits_col = get_habits_collection()
-        habits = list(
-            habits_col.find({'user_id': session['user_id']})
-                      .sort('created_at', -1)
-        )
+        habits       = _get_user_habits(session['user_id'])
+        total_habits = len(habits)
 
-        total_habits    = len(habits)
-        today_completed = sum(1 for h in habits if today in h.get('completed_dates', []))
+        today_completed = sum(
+            1 for h in habits if today in h.get('completed_dates', [])
+        )
 
         if total_habits > 0:
             completion_rate = round((today_completed / total_habits) * 100, 1)
@@ -64,7 +86,7 @@ def index():
 @habits_bp.route('/add_habit', methods=['POST'])
 @login_required
 def add_habit():
-    """Crea un nuevo hábito para el usuario en sesión."""
+    """Crea un nuevo hábito."""
     if not validate_csrf_token():
         flash('Token de seguridad inválido.', 'error')
         return redirect(url_for('habits.index'))
@@ -77,12 +99,12 @@ def add_habit():
         return redirect(url_for('habits.index'))
 
     try:
-        get_habits_collection().insert_one({
-            'name':             habit_name,
-            'description':      habit_description,
-            'created_at':       datetime.now(),
-            'completed_dates':  [],
-            'user_id':          session['user_id'],
+        get_habits_collection().add({
+            'name':            habit_name,
+            'description':     habit_description,
+            'created_at':      datetime.now().isoformat(),
+            'completed_dates': [],
+            'user_id':         session['user_id'],
         })
         flash('¡Hábito agregado correctamente!', 'success')
     except Exception as e:
@@ -95,36 +117,32 @@ def add_habit():
 @habits_bp.route('/complete_habit/<habit_id>', methods=['POST'])
 @login_required
 def complete_habit(habit_id):
-    """Marca un hábito como completado para el día actual."""
+    """Marca un hábito como completado para hoy."""
     if not validate_csrf_token():
         flash('Token de seguridad inválido.', 'error')
         return redirect(url_for('habits.index'))
 
-    today      = datetime.now().strftime('%Y-%m-%d')
-    habits_col = get_habits_collection()
+    today = datetime.now().strftime('%Y-%m-%d')
 
     try:
-        habit = habits_col.find_one({
-            '_id':     ObjectId(habit_id),
-            'user_id': session['user_id'],
-        })
+        habits_col = get_habits_collection()
+        doc_ref    = habits_col.document(habit_id)
+        doc        = doc_ref.get()
 
-        if not habit:
+        if not doc.exists or doc.to_dict().get('user_id') != session['user_id']:
             flash('Hábito no encontrado.', 'error')
             return redirect(url_for('habits.index'))
 
-        if today in habit.get('completed_dates', []):
+        habit = doc.to_dict()
+        completed_dates = habit.get('completed_dates', [])
+
+        if today in completed_dates:
             flash('Este hábito ya fue completado hoy.', 'info')
             return redirect(url_for('habits.index'))
 
-        result = habits_col.update_one(
-            {'_id': ObjectId(habit_id), 'user_id': session['user_id']},
-            {'$push': {'completed_dates': today}}
-        )
-        if result.modified_count > 0:
-            flash('¡Hábito completado! ✅', 'success')
-        else:
-            flash('No se pudo completar el hábito.', 'error')
+        completed_dates.append(today)
+        doc_ref.update({'completed_dates': completed_dates})
+        flash('¡Hábito completado! ✅', 'success')
 
     except Exception as e:
         print(f"ERROR en complete_habit: {e}")
@@ -136,22 +154,23 @@ def complete_habit(habit_id):
 @habits_bp.route('/edit_habit/<habit_id>', methods=['GET', 'POST'])
 @login_required
 def edit_habit(habit_id):
-    """Edita nombre y descripción de un hábito existente."""
-    habits_col = get_habits_collection()
-
+    """Edita nombre y descripción de un hábito."""
     try:
-        habit = habits_col.find_one({
-            '_id':     ObjectId(habit_id),
-            'user_id': session['user_id'],
-        })
-        if not habit:
+        habits_col = get_habits_collection()
+        doc_ref    = habits_col.document(habit_id)
+        doc        = doc_ref.get()
+
+        if not doc.exists or doc.to_dict().get('user_id') != session['user_id']:
             flash('Hábito no encontrado.', 'error')
             return redirect(url_for('habits.index'))
+
+        habit = doc.to_dict()
+        habit['_id'] = habit_id
 
         if request.method == 'POST':
             if not validate_csrf_token():
                 flash('Token de seguridad inválido.', 'error')
-                return redirect(url_for('habits.edit_habit', habit_id=habit_id))
+                return render_template('edit_habit.html', habit=habit)
 
             habit_name        = request.form.get('habit_name', '').strip()
             habit_description = request.form.get('habit_description', '').strip()
@@ -160,20 +179,13 @@ def edit_habit(habit_id):
                 flash('El nombre del hábito es requerido.', 'error')
                 return render_template('edit_habit.html', habit=habit)
 
-            result = habits_col.update_one(
-                {'_id': ObjectId(habit_id), 'user_id': session['user_id']},
-                {'$set': {'name': habit_name, 'description': habit_description}}
-            )
-            flash(
-                '¡Hábito actualizado!' if result.modified_count > 0
-                else 'No se realizaron cambios.',
-                'success' if result.modified_count > 0 else 'info'
-            )
+            doc_ref.update({'name': habit_name, 'description': habit_description})
+            flash('¡Hábito actualizado!', 'success')
             return redirect(url_for('habits.index'))
 
     except Exception as e:
         print(f"ERROR en edit_habit: {e}")
-        flash('Error al cargar el hábito para edición.', 'error')
+        flash('Error al cargar el hábito.', 'error')
         return redirect(url_for('habits.index'))
 
     return render_template('edit_habit.html', habit=habit)
@@ -182,21 +194,22 @@ def edit_habit(habit_id):
 @habits_bp.route('/delete_habit/<habit_id>', methods=['POST'])
 @login_required
 def delete_habit(habit_id):
-    """Elimina permanentemente un hábito del usuario."""
+    """Elimina un hábito."""
     if not validate_csrf_token():
         flash('Token de seguridad inválido.', 'error')
         return redirect(url_for('habits.index'))
 
     try:
-        result = get_habits_collection().delete_one({
-            '_id':     ObjectId(habit_id),
-            'user_id': session['user_id'],
-        })
-        flash(
-            'Hábito eliminado correctamente.' if result.deleted_count > 0
-            else 'Hábito no encontrado.',
-            'success' if result.deleted_count > 0 else 'error'
-        )
+        doc_ref = get_habits_collection().document(habit_id)
+        doc     = doc_ref.get()
+
+        if not doc.exists or doc.to_dict().get('user_id') != session['user_id']:
+            flash('Hábito no encontrado.', 'error')
+            return redirect(url_for('habits.index'))
+
+        doc_ref.delete()
+        flash('Hábito eliminado correctamente.', 'success')
+
     except Exception as e:
         print(f"ERROR en delete_habit: {e}")
         flash('Error al eliminar el hábito.', 'error')
@@ -207,20 +220,28 @@ def delete_habit(habit_id):
 @habits_bp.route('/profile')
 @login_required
 def profile():
-    """Página de perfil del usuario con estadísticas."""
-    user          = None
-    habit_count   = 0
+    """Página de perfil del usuario."""
+    user            = None
+    habit_count     = 0
     completed_today = 0
     today = datetime.now().strftime('%Y-%m-%d')
 
     try:
-        user          = get_users_collection().find_one({'_id': ObjectId(session['user_id'])})
-        habits_col    = get_habits_collection()
-        habit_count   = habits_col.count_documents({'user_id': session['user_id']})
-        completed_today = habits_col.count_documents({
-            'user_id':          session['user_id'],
-            'completed_dates':  today,
-        })
+        # Obtener datos del usuario
+        doc = get_users_collection().document(session['user_id']).get()
+        if doc.exists:
+            user = doc.to_dict()
+            user['_id'] = doc.id
+            # Convertir created_at a datetime si es string
+            if isinstance(user.get('created_at'), str):
+                user['created_at'] = datetime.fromisoformat(user['created_at'])
+
+        habits      = _get_user_habits(session['user_id'])
+        habit_count = len(habits)
+        completed_today = sum(
+            1 for h in habits if today in h.get('completed_dates', [])
+        )
+
     except Exception as e:
         print(f"ERROR en profile: {e}")
         flash('Error al cargar el perfil.', 'error')

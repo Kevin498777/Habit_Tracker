@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 
 from flask import session, request
-from bson import ObjectId
+#from bson import ObjectId
 
 
 # ── Configuración de cookies ───────────────────────────────────────────────────
@@ -61,17 +61,16 @@ def save_cookie_settings(settings: dict, users_collection=None) -> dict:
     """
     Persiste la configuración de cookies:
     - Siempre en la sesión Flask.
-    - Si el usuario está autenticado, también en MongoDB.
+    - Si el usuario está autenticado, también en Firestore.
     """
-    settings['last_updated'] = datetime.now()
+    settings['last_updated'] = datetime.now().isoformat()
     session['cookie_settings'] = settings
 
     if 'user_id' in session and users_collection is not None:
         try:
-            users_collection.update_one(
-                {'_id': ObjectId(session['user_id'])},
-                {'$set': {'cookie_settings': settings}}
-            )
+            users_collection.document(session['user_id']).update({
+                'cookie_settings': settings
+            })
         except Exception as e:
             print(f"Error guardando configuración de cookies en DB: {e}")
 
