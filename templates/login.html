@@ -10,7 +10,7 @@
                 <h3 class="card-title text-center mb-0">Iniciar Sesión</h3>
             </div>
             <div class="card-body">
-                <form method="POST" action="{{ url_for('login') }}">
+                <form method="POST" action="{{ url_for('auth.login') }}">
                     <div class="mb-3">
                         <label for="username" class="form-label">Usuario o Email</label>
                         <input type="text" class="form-control" id="username" name="username" 
@@ -34,7 +34,7 @@
                 
                 <div class="text-center">
                     <p class="text-muted mb-0">¿No tienes una cuenta?</p>
-                    <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-sm mt-2">
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-outline-primary btn-sm mt-2">
                         Crear Cuenta
                     </a>
                 </div>

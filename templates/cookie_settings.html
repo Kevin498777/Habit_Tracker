@@ -18,7 +18,7 @@
                     </div>
                 </div>
 
-                <form id="cookieSettingsForm" method="POST" action="{{ url_for('save_cookie_settings') }}">
+                <form id="cookieSettingsForm" method="POST" action="{{ url_for('cookies.save_cookie_settings_route') }}">
                     <!-- Preferencias del Usuario -->
                     <div class="mb-4">
                         <h5 class="mb-3">🍪 Preferencias de Cookies</h5>
@@ -127,7 +127,7 @@
 
                     <!-- Botones de acción -->
                     <div class="d-flex justify-content-between mt-4">
-                        <a href="{{ url_for('cookies_policy') }}" class="btn btn-outline-secondary">
+                        <a href="{{ url_for('cookies.cookies_policy') }}" class="btn btn-outline-secondary">
                             📄 Ver Política Completa
                         </a>
                         

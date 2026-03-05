@@ -16,7 +16,7 @@
                 <h5 class="card-title mb-0">➕ Agregar Nuevo Hábito</h5>
             </div>
             <div class="card-body">
-                <form action="{{ url_for('add_habit') }}" method="POST">
+                <form action="{{ url_for('habits.add_habit') }}" method="POST">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="habit_name" class="form-label">Nombre del Hábito *</label>
@@ -76,18 +76,18 @@
                                 
                                 <div class="btn-group ms-3">
                                     {% if today not in habit.completed_dates %}
-                                    <form action="{{ url_for('complete_habit', habit_id=habit._id) }}" method="POST" class="me-2">
+                                    <form action="{{ url_for('habits.complete_habit', habit_id=habit._id) }}" method="POST" class="me-2">
                                         <button type="submit" class="btn btn-success btn-sm">
                                             ✅ Completar Hoy
                                         </button>
                                     </form>
                                     {% endif %}
 
-                                    <a href="{{ url_for('edit_habit', habit_id=habit._id) }}" class="btn btn-warning btn-sm me-2">
+                                    <a href="{{ url_for('habits.edit_habit', habit_id=habit._id) }}" class="btn btn-warning btn-sm me-2">
                                         ✏️ Editar
                                     </a>
                                     
-                                    <form action="{{ url_for('delete_habit', habit_id=habit._id) }}" method="POST" 
+                                    <form action="{{ url_for('habits.delete_habit', habit_id=habit._id) }}" method="POST" 
                                           onsubmit="return confirm('¿Estás seguro de que quieres eliminar este hábito?');">
                                         <button type="submit" class="btn btn-danger btn-sm">
                                             🗑️ Eliminar
@@ -151,10 +151,10 @@
             </div>
             <div class="card-body">
                 <div class="d-grid gap-2">
-                    <a href="{{ url_for('profile') }}" class="btn btn-outline-primary">
+                    <a href="{{ url_for('habits.profile') }}" class="btn btn-outline-primary">
                         Mi Perfil
                     </a>
-                    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">
+                    <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-danger">
                         Cerrar Sesión
                     </a>
                 </div>

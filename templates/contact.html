@@ -76,7 +76,7 @@
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="privacyCheck" required>
                             <label class="form-check-label" for="privacyCheck">
-                                He leído y acepto la <a href="{{ url_for('privacy_policy') }}">Política de Privacidad</a>
+                                He leído y acepto la <a href="{{ url_for('pages.privacy_policy') }}">Política de Privacidad</a>
                             </label>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Enviar Mensaje</button>
@@ -105,13 +105,13 @@
                 <!-- Botones de acción -->
                 <div class="mt-4">
                     <div class="d-flex justify-content-between">
-                        <a href="{{ url_for('privacy_policy') }}" class="btn btn-outline-primary">
+                        <a href="{{ url_for('pages.privacy_policy') }}" class="btn btn-outline-primary">
                             🔒 Política de Privacidad
                         </a>
-                        <a href="{{ url_for('terms_of_service') }}" class="btn btn-outline-primary">
+                        <a href="{{ url_for('pages.terms_of_service') }}" class="btn btn-outline-primary">
                             📋 Términos y Condiciones
                         </a>
-                        <a href="{{ url_for('index') }}" class="btn btn-success">
+                        <a href="{{ url_for('habits.index') }}" class="btn btn-success">
                             🏠 Volver al Inicio
                         </a>
                     </div>
