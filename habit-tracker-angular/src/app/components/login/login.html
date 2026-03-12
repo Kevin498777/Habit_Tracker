@@ -1,0 +1,24 @@
+<div class="container">
+  <h2>Iniciar Sesión</h2>
+
+  <input type="email" placeholder="Correo electrónico"
+         [(ngModel)]="email" />
+
+  <input type="password" placeholder="Contraseña"
+         [(ngModel)]="password" />
+
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <button (click)="onLogin()">Entrar</button>
+
+  <div class="divider">
+    <span>o</span>
+  </div>
+
+  <button class="google" (click)="onGoogleLogin()">
+    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" />
+    Continuar con Google
+  </button>
+
+  <button class="secondary" (click)="goToRegister()">¿No tienes cuenta? Regístrate</button>
+</div>

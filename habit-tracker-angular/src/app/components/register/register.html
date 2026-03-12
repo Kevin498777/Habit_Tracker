@@ -1,0 +1,17 @@
+<div class="container">
+  <h2>Crear Cuenta</h2>
+
+  <input type="email" placeholder="Correo electrónico"
+         [(ngModel)]="email" />
+
+  <input type="password" placeholder="Contraseña"
+         [(ngModel)]="password" />
+
+  <input type="password" placeholder="Confirmar contraseña"
+         [(ngModel)]="confirmPassword" />
+
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <button (click)="onRegister()">Registrarse</button>
+  <button class="secondary" (click)="goToLogin()">¿Ya tienes cuenta? Inicia sesión</button>
+</div>

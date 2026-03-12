@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="header">
+    <h2>Mis Hábitos</h2>
+    <button class="logout" (click)="logout()">Cerrar sesión</button>
+  </div>
+
+  <div class="form">
+    <input type="text" placeholder="Nombre del hábito"
+           [(ngModel)]="newHabitName" />
+    <input type="text" placeholder="Descripción (opcional)"
+           [(ngModel)]="newHabitDescription" />
+    <button (click)="addHabit()">Agregar</button>
+  </div>
+
+  <div class="empty" *ngIf="habits.length === 0">
+    No tienes hábitos aún. ¡Agrega uno!
+  </div>
+
+  <div class="habit-card" *ngFor="let habit of habits">
+    <div class="habit-info">
+      <h3>{{ habit.name }}</h3>
+      <p *ngIf="habit.description">{{ habit.description }}</p>
+    </div>
+    <button class="delete" (click)="deleteHabit(habit.id)">🗑️</button>
+  </div>
+</div>

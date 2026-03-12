@@ -83,3 +83,8 @@ static/exports/
 # Documentación temporal
 docs/*.tmp
 docs/*.bak
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
