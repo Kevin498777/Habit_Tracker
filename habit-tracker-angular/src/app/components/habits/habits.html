@@ -1,26 +1,95 @@
 <div class="container">
+
+  <!-- Header -->
   <div class="header">
-    <h2>Mis Hábitos</h2>
-    <button class="logout" (click)="logout()">Cerrar sesión</button>
+    <h2>🏃 Mis Hábitos</h2>
+    <div class="header-actions">
+      <button class="btn-profile" (click)="goToProfile()">👤 Perfil</button>
+      <button class="btn-logout" (click)="logout()">Cerrar sesión</button>
+    </div>
   </div>
 
-  <div class="form">
-    <input type="text" placeholder="Nombre del hábito"
+  <!-- Estadísticas -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3>{{ totalHabits }}</h3>
+      <p>Total</p>
+    </div>
+    <div class="stat-card green">
+      <h3>{{ todayCompleted }}</h3>
+      <p>Hoy</p>
+    </div>
+    <div class="stat-card yellow">
+      <h3>{{ weekCompletions }}</h3>
+      <p>Esta semana</p>
+    </div>
+    <div class="stat-card purple">
+      <h3>{{ completionRate }}%</h3>
+      <p>Progreso</p>
+    </div>
+  </div>
+
+  <!-- Barra de progreso -->
+  <div class="progress-container">
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="completionRate"></div>
+    </div>
+    <p class="motivational">{{ getMotivationalMessage() }}</p>
+  </div>
+
+  <!-- Formulario agregar -->
+  <div class="form-card">
+    <h3>➕ Agregar Nuevo Hábito</h3>
+    <input type="text" placeholder="Nombre del hábito *"
            [(ngModel)]="newHabitName" />
     <input type="text" placeholder="Descripción (opcional)"
            [(ngModel)]="newHabitDescription" />
-    <button (click)="addHabit()">Agregar</button>
+    <button class="btn-primary" (click)="addHabit()">Agregar Hábito</button>
   </div>
 
-  <div class="empty" *ngIf="habits.length === 0">
-    No tienes hábitos aún. ¡Agrega uno!
-  </div>
-
-  <div class="habit-card" *ngFor="let habit of habits">
-    <div class="habit-info">
-      <h3>{{ habit.name }}</h3>
-      <p *ngIf="habit.description">{{ habit.description }}</p>
+  <!-- Modal edición -->
+  <div class="modal-overlay" *ngIf="editingHabit">
+    <div class="modal">
+      <h3>✏️ Editar Hábito</h3>
+      <input type="text" placeholder="Nombre *" [(ngModel)]="editName" />
+      <input type="text" placeholder="Descripción" [(ngModel)]="editDescription" />
+      <div class="modal-actions">
+        <button class="btn-secondary" (click)="cancelEdit()">Cancelar</button>
+        <button class="btn-primary" (click)="saveEdit()">Guardar</button>
+      </div>
     </div>
-    <button class="delete" (click)="deleteHabit(habit.id)">🗑️</button>
   </div>
+
+  <!-- Lista vacía -->
+  <div class="empty" *ngIf="habits.length === 0">
+    <span>📝</span>
+    <p>No tienes hábitos registrados todavía</p>
+    <small>¡Comienza agregando tu primer hábito arriba!</small>
+  </div>
+
+  <!-- Lista de hábitos -->
+  <div class="habit-card" *ngFor="let habit of habits"
+       [class.completed]="isCompletedToday(habit)">
+    <div class="habit-info">
+      <div class="habit-title">
+        <h3>{{ habit.name }}</h3>
+        <span class="badge-completed" *ngIf="isCompletedToday(habit)">✅ Completado hoy</span>
+      </div>
+      <p *ngIf="habit.description">{{ habit.description }}</p>
+      <small>Completado {{ habit.completed_dates?.length || 0 }} veces</small>
+    </div>
+    <div class="habit-actions">
+      <button class="btn-complete" *ngIf="!isCompletedToday(habit)"
+              (click)="completeHabit(habit.id)">✅ Completar</button>
+      <button class="btn-edit" (click)="startEdit(habit)">✏️</button>
+      <button class="btn-delete" (click)="deleteHabit(habit.id)">🗑️</button>
+    </div>
+  </div>
+  <!-- Footer -->
+    <div class="footer">
+        <a (click)="goToPrivacy()">Política de Privacidad</a> |
+        <a (click)="goToTerms()">Términos y Condiciones</a> |
+        <a (click)="goToContact()">Contacto</a>
+    </div>
+
 </div>

@@ -1,0 +1,71 @@
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <button class="btn-back" (click)="goToHabits()">← Volver</button>
+    <button class="btn-logout" (click)="logout()">Cerrar sesión</button>
+  </div>
+
+  <!-- Info del usuario -->
+  <div class="profile-card">
+    <div class="avatar">{{ getInitial() }}</div>
+    <h2>{{ user?.displayName || 'Usuario' }}</h2>
+    <p class="email">{{ user?.email }}</p>
+  </div>
+
+  <!-- Estadísticas -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3>{{ habitCount }}</h3>
+      <p>Hábitos Totales</p>
+    </div>
+    <div class="stat-card green">
+      <h3>{{ completedToday }}</h3>
+      <p>Completados Hoy</p>
+    </div>
+    <div class="stat-card yellow">
+      <h3>{{ weekCompletions }}</h3>
+      <p>Esta Semana</p>
+    </div>
+    <div class="stat-card purple">
+      <h3>{{ completionRate }}%</h3>
+      <p>Progreso Hoy</p>
+    </div>
+  </div>
+
+  <!-- Recomendaciones -->
+  <div class="recommendations" *ngIf="recommendations.length > 0">
+    <h3>💡 Recomendaciones</h3>
+    <div class="rec-card" *ngFor="let rec of recommendations"
+         [class.high]="rec.priority === 'high'"
+         [class.medium]="rec.priority === 'medium'">
+      <div class="rec-icon">
+        {{ rec.type === 'exercise' ? '🏃' : rec.type === 'reading' ? '📚' : '🧘' }}
+      </div>
+      <div class="rec-info">
+        <p>{{ rec.message }}</p>
+        <small>💡 {{ rec.suggestion }}</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Info de cuenta -->
+  <div class="account-info">
+    <h3>Información de la Cuenta</h3>
+    <div class="info-row">
+      <span>Email</span>
+      <span class="badge">{{ user?.email }}</span>
+    </div>
+    <div class="info-row">
+      <span>Proveedor</span>
+      <span class="badge">
+        {{ user?.providerData[0]?.providerId === 'google.com' ? '🔵 Google' : '📧 Email' }}
+      </span>
+    </div>
+    <div class="info-row">
+      <span>UID</span>
+      <span class="badge uid">{{ user?.uid }}</span>
+    </div>
+  </div>
+
+</div>

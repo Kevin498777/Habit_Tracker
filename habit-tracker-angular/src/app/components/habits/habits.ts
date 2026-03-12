@@ -15,6 +15,14 @@ export class Habits implements OnInit {
   habits: any[] = [];
   newHabitName = '';
   newHabitDescription = '';
+  editingHabit: any = null;
+  editName = '';
+  editDescription = '';
+  totalHabits = 0;
+  todayCompleted = 0;
+  completionRate = 0;
+  weekCompletions = 0;
+  today = new Date().toISOString().split('T')[0];
 
   constructor(
     private habitsService: HabitsService,
@@ -25,6 +33,11 @@ export class Habits implements OnInit {
   ngOnInit() {
     this.habitsService.getHabits().subscribe(habits => {
       this.habits = habits;
+      const stats = this.habitsService.getStats(habits);
+      this.totalHabits = stats.totalHabits;
+      this.todayCompleted = stats.todayCompleted;
+      this.completionRate = stats.completionRate;
+      this.weekCompletions = stats.weekCompletions;
     });
   }
 
@@ -35,9 +48,50 @@ export class Habits implements OnInit {
     this.newHabitDescription = '';
   }
 
-  async deleteHabit(habitId: string) {
-    await this.habitsService.deleteHabit(habitId);
+  async completeHabit(habitId: string) {
+    await this.habitsService.completeHabit(habitId);
   }
+
+  isCompletedToday(habit: any): boolean {
+    return habit.completed_dates?.includes(this.today) ?? false;
+  }
+
+  startEdit(habit: any) {
+    this.editingHabit = habit;
+    this.editName = habit.name;
+    this.editDescription = habit.description || '';
+  }
+
+  cancelEdit() {
+    this.editingHabit = null;
+    this.editName = '';
+    this.editDescription = '';
+  }
+
+  async saveEdit() {
+    if (!this.editName.trim()) return;
+    await this.habitsService.updateHabit(this.editingHabit.id, this.editName, this.editDescription);
+    this.cancelEdit();
+  }
+
+  async deleteHabit(habitId: string) {
+    if (confirm('¿Estás seguro de que quieres eliminar este hábito?')) {
+      await this.habitsService.deleteHabit(habitId);
+    }
+  }
+
+  getMotivationalMessage(): string {
+    if (this.completionRate === 100) return '¡Perfecto! Completaste todos tus hábitos hoy. 🎉';
+    if (this.completionRate >= 75) return '¡Excelente progreso! Casi lo logras. 💪';
+    if (this.completionRate >= 50) return 'Vas por buen camino, ¡sigue así! 🚀';
+    if (this.completionRate > 0) return '¡Buen comienzo, continúa con el momentum! ⚡';
+    return '¡Comienza completando tu primer hábito hoy! 📝';
+  }
+
+  goToProfile() { this.router.navigate(['/profile']); }
+  goToPrivacy() { this.router.navigate(['/privacy']); }
+  goToTerms() { this.router.navigate(['/terms']); }
+  goToContact() { this.router.navigate(['/contact']); }
 
   async logout() {
     await this.authService.logout();

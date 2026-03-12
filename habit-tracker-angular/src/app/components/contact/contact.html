@@ -1,0 +1,32 @@
+<div class="container">
+  <button class="btn-back" (click)="goBack()">← Volver</button>
+  <div class="card">
+    <h2>📞 Contacto</h2>
+
+    <div class="contact-info">
+      <div class="info-item">📧 <strong>Soporte:</strong> soporte&#64;habittracker.com</div>
+      <div class="info-item">⚖️ <strong>Legal:</strong> legal&#64;habittracker.com</div>
+      <div class="info-item">🔒 <strong>Privacidad:</strong> privacidad&#64;habittracker.com</div>
+    </div>
+
+    <div class="success-msg" *ngIf="sent">
+      ✅ ¡Mensaje enviado! Te responderemos en 24-48 horas.
+    </div>
+
+    <div *ngIf="!sent">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" [(ngModel)]="name" placeholder="Tu nombre" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="email" placeholder="tu&#64;email.com" />
+      </div>
+      <div class="form-group">
+        <label>Mensaje</label>
+        <textarea [(ngModel)]="message" placeholder="¿En qué podemos ayudarte?" rows="5"></textarea>
+      </div>
+      <button class="btn-primary" (click)="sendMessage()">Enviar Mensaje</button>
+    </div>
+  </div>
+</div>

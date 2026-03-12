@@ -1,0 +1,14 @@
+<div class="banner" *ngIf="showBanner">
+  <div class="banner-content">
+    <div class="banner-text">
+      <h5>🍪 Uso de Cookies</h5>
+      <p>Usamos cookies esenciales para el funcionamiento del sitio.
+        <a (click)="goToPolicy()">Más información</a>
+      </p>
+    </div>
+    <div class="banner-actions">
+      <button class="btn-essential" (click)="acceptEssential()">Solo Esenciales</button>
+      <button class="btn-accept" (click)="acceptAll()">Aceptar Todas</button>
+    </div>
+  </div>
+</div>
