@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+
+{% block title %}Calendario - HabitTracker{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+
+        <!-- Encabezado con navegación de mes -->
+        <div class="card fade-in mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    <div>
+                        <h2 class="mb-1">📅 Calendario de Hábitos</h2>
+                        <p class="text-muted mb-0">Visualiza tu progreso día a día</p>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="{{ url_for('habits.calendar_view', year=prev_year, month=prev_month, habit_id=selected_habit_id or '') }}"
+                           class="btn btn-outline-primary btn-sm">
+                            ← Anterior
+                        </a>
+                        <h4 class="mb-0 mx-3 text-capitalize" style="min-width: 180px; text-align: center;">
+                            {{ month_name }} {{ year }}
+                        </h4>
+                        <a href="{{ url_for('habits.calendar_view', year=next_year, month=next_month, habit_id=selected_habit_id or '') }}"
+                           class="btn btn-outline-primary btn-sm">
+                            Siguiente →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Filtro por hábito -->
+                <div class="mt-4 pt-3 border-top">
+                    <form method="GET" action="{{ url_for('habits.calendar_view') }}" class="d-flex align-items-center gap-2 flex-wrap">
+                        <input type="hidden" name="year" value="{{ year }}">
+                        <input type="hidden" name="month" value="{{ month }}">
+
+                        <label for="habit_id" class="form-label mb-0 me-2"><strong>Ver:</strong></label>
+                        <select name="habit_id" id="habit_id" class="form-select" style="max-width: 320px;"
+                                onchange="this.form.submit()">
+                            <option value="">🌐 Todos los hábitos (vista global)</option>
+                            {% for habit in habits %}
+                                <option value="{{ habit._id }}"
+                                        {% if selected_habit_id == habit._id|string %}selected{% endif %}>
+                                    {{ habit.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+
+                        {% if selected_habit_id %}
+                            <a href="{{ url_for('habits.calendar_view', year=year, month=month) }}"
+                               class="btn btn-outline-secondary btn-sm">
+                                Limpiar filtro
+                            </a>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estadísticas del mes -->
+        <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+                <div class="card fade-in h-100">
+                    <div class="card-body text-center">
+                        <h3 class="text-primary mb-1">{{ month_stats.total_completions }}</h3>
+                        <p class="text-muted mb-0">Completaciones este mes</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card fade-in h-100">
+                    <div class="card-body text-center">
+                        <h3 class="text-success mb-1">{{ month_stats.active_days }}</h3>
+                        <p class="text-muted mb-0">Días con actividad</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card fade-in h-100">
+                    <div class="card-body text-center">
+                        <h3 class="text-warning mb-1">{{ month_stats.best_streak }}</h3>
+                        <p class="text-muted mb-0">Mejor racha (días)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendario -->
+        <div class="card fade-in">
+            <div class="card-body">
+                <!-- Días de la semana -->
+                <div class="calendar-grid calendar-weekdays mb-2">
+                    <div class="calendar-weekday">Lun</div>
+                    <div class="calendar-weekday">Mar</div>
+                    <div class="calendar-weekday">Mié</div>
+                    <div class="calendar-weekday">Jue</div>
+                    <div class="calendar-weekday">Vie</div>
+                    <div class="calendar-weekday">Sáb</div>
+                    <div class="calendar-weekday">Dom</div>
+                </div>
+
+                <!-- Días del mes -->
+                <div class="calendar-grid">
+                    {% for day in calendar_days %}
+                        {% if day.empty %}
+                            <div class="calendar-day calendar-day-empty"></div>
+                        {% else %}
+                            <div class="calendar-day
+                                        {% if day.is_today %}calendar-day-today{% endif %}
+                                        {% if day.completion_level == 'full' %}calendar-day-full{% endif %}
+                                        {% if day.completion_level == 'partial' %}calendar-day-partial{% endif %}
+                                        {% if day.completion_level == 'single' %}calendar-day-single{% endif %}"
+                                 {% if day.habits_completed %}
+                                     data-bs-toggle="tooltip"
+                                     data-bs-html="true"
+                                     title="{{ day.tooltip }}"
+                                 {% endif %}>
+                                <div class="calendar-day-number">{{ day.day }}</div>
+                                {% if day.completed_count > 0 %}
+                                    <div class="calendar-day-count">
+                                        {% if selected_habit_id %}
+                                            ✓
+                                        {% else %}
+                                            {{ day.completed_count }}/{{ day.total_count }}
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <!-- Leyenda -->
+                <div class="calendar-legend mt-4 pt-3 border-top">
+                    <div class="d-flex flex-wrap gap-3 justify-content-center align-items-center">
+                        <small class="text-muted"><strong>Leyenda:</strong></small>
+                        <div class="legend-item">
+                            <span class="legend-swatch legend-swatch-single"></span>
+                            <small>Algo de actividad</small>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-swatch legend-swatch-partial"></span>
+                            <small>Avance parcial</small>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-swatch legend-swatch-full"></span>
+                            <small>Día completo</small>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-swatch legend-swatch-today"></span>
+                            <small>Hoy</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botón volver -->
+        <div class="text-center mt-4">
+            <a href="{{ url_for('habits.index') }}" class="btn btn-outline-primary">
+                🏠 Volver a Mis Hábitos
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos del calendario -->
+<style>
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 6px;
+    }
+
+    .calendar-weekday {
+        text-align: center;
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--text-secondary, #94a3b8);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 0.5rem 0;
+    }
+
+    .calendar-day {
+        aspect-ratio: 1 / 1;
+        border-radius: 10px;
+        background: rgba(45, 55, 72, 0.4);
+        border: 1px solid rgba(99, 102, 241, 0.15);
+        padding: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        transition: all 0.25s ease;
+        cursor: default;
+        min-height: 70px;
+    }
+
+    .calendar-day:not(.calendar-day-empty):hover {
+        transform: translateY(-3px);
+        border-color: rgba(99, 102, 241, 0.6);
+        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
+    }
+
+    .calendar-day-empty {
+        background: transparent;
+        border: 1px dashed rgba(99, 102, 241, 0.08);
+    }
+
+    .calendar-day-number {
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--text-primary, #e2e8f0);
+    }
+
+    .calendar-day-count {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-align: right;
+        align-self: flex-end;
+        background: rgba(0, 0, 0, 0.25);
+        padding: 2px 6px;
+        border-radius: 6px;
+    }
+
+    /* Niveles de completitud */
+    .calendar-day-single {
+        background: rgba(99, 102, 241, 0.15);
+        border-color: rgba(99, 102, 241, 0.4);
+    }
+
+    .calendar-day-partial {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(16, 185, 129, 0.2));
+        border-color: rgba(16, 185, 129, 0.4);
+    }
+
+    .calendar-day-full {
+        background: linear-gradient(135deg, #6366f1, #10b981);
+        border-color: #10b981;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .calendar-day-full .calendar-day-number,
+    .calendar-day-full .calendar-day-count {
+        color: #ffffff;
+    }
+
+    /* Día actual */
+    .calendar-day-today {
+        border: 2px solid #fbbf24;
+        box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.2);
+    }
+
+    .calendar-day-today .calendar-day-number {
+        color: #fbbf24;
+    }
+
+    .calendar-day-today.calendar-day-full .calendar-day-number {
+        color: #ffffff;
+        text-shadow: 0 0 8px rgba(251, 191, 36, 0.8);
+    }
+
+    /* Leyenda */
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .legend-swatch {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        border-radius: 5px;
+        border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+
+    .legend-swatch-single {
+        background: rgba(99, 102, 241, 0.15);
+    }
+
+    .legend-swatch-partial {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(16, 185, 129, 0.2));
+    }
+
+    .legend-swatch-full {
+        background: linear-gradient(135deg, #6366f1, #10b981);
+    }
+
+    .legend-swatch-today {
+        background: transparent;
+        border: 2px solid #fbbf24;
+    }
+
+    /* Responsive */
+    @media (max-width: 576px) {
+        .calendar-day {
+            min-height: 50px;
+            padding: 0.3rem;
+        }
+        .calendar-day-number {
+            font-size: 0.8rem;
+        }
+        .calendar-day-count {
+            font-size: 0.65rem;
+            padding: 1px 4px;
+        }
+        .calendar-weekday {
+            font-size: 0.7rem;
+        }
+    }
+</style>
+
+<!-- Activar tooltips de Bootstrap -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        [...tooltipTriggerList].forEach(el => new bootstrap.Tooltip(el));
+    });
+</script>
+{% endblock %}

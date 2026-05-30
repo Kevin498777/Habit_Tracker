@@ -1,5 +1,6 @@
 # routes/habits.py — Blueprint de hábitos adaptado a Firestore
-from datetime import datetime, timedelta
+import calendar as cal
+from datetime import datetime, timedelta, date
 
 from flask import (
     Blueprint, render_template, request,
@@ -252,3 +253,166 @@ def profile():
         habit_count=habit_count,
         completed_today=completed_today,
     )
+
+@habits_bp.route('/calendario')
+@login_required
+def calendar_view():
+    """
+    Vista de calendario mensual con hábitos completados.
+    Soporta vista global (todos los hábitos) y filtrada por hábito individual.
+
+    Query params:
+        - year: año a mostrar (default: año actual)
+        - month: mes a mostrar (1-12, default: mes actual)
+        - habit_id: ID del hábito a filtrar (opcional, vacío = todos)
+    """
+    today = date.today()
+
+    # --- Parsear parámetros con validación ---
+    try:
+        year = int(request.args.get('year', today.year))
+        month = int(request.args.get('month', today.month))
+        if month < 1 or month > 12:
+            raise ValueError
+    except (ValueError, TypeError):
+        year, month = today.year, today.month
+
+    selected_habit_id = request.args.get('habit_id', '').strip() or None
+
+    # --- Obtener hábitos del usuario (reutilizamos el helper que ya existe) ---
+    user_habits = []
+    habits_to_show = []
+    month_stats = {'total_completions': 0, 'active_days': 0, 'best_streak': 0}
+    calendar_days = []
+
+    try:
+        user_habits = _get_user_habits(session['user_id'])
+
+        # Filtrar si se seleccionó un hábito específico
+        if selected_habit_id:
+            habits_to_show = [
+                h for h in user_habits
+                if str(h.get('_id')) == selected_habit_id
+            ]
+        else:
+            habits_to_show = user_habits
+
+        # --- Construir matriz del calendario ---
+        cal.setfirstweekday(cal.MONDAY)
+        month_calendar = cal.monthcalendar(year, month)
+
+        days_with_activity = set()
+        total_completions = 0
+
+        for week in month_calendar:
+            for day_num in week:
+                if day_num == 0:
+                    calendar_days.append({'empty': True})
+                    continue
+
+                day_date = date(year, month, day_num)
+                day_str = day_date.strftime('%Y-%m-%d')  # mismo formato que usas en complete_habit
+
+                # Contar hábitos completados ese día
+                habits_completed_today = []
+                for h in habits_to_show:
+                    if day_str in h.get('completed_dates', []):
+                        habits_completed_today.append(h.get('name', 'Sin nombre'))
+
+                completed_count = len(habits_completed_today)
+                total_count = len(habits_to_show)
+
+                # Determinar nivel de completitud (para el color)
+                if completed_count == 0:
+                    completion_level = 'none'
+                elif selected_habit_id:
+                    completion_level = 'full'
+                elif completed_count == total_count and total_count > 0:
+                    completion_level = 'full'
+                elif completed_count >= total_count / 2:
+                    completion_level = 'partial'
+                else:
+                    completion_level = 'single'
+
+                if habits_completed_today:
+                    tooltip = '<strong>Completados:</strong><br>• ' + '<br>• '.join(habits_completed_today)
+                    days_with_activity.add(day_str)
+                    total_completions += completed_count
+                else:
+                    tooltip = ''
+
+                calendar_days.append({
+                    'empty': False,
+                    'day': day_num,
+                    'date': day_str,
+                    'is_today': day_date == today,
+                    'completed_count': completed_count,
+                    'total_count': total_count,
+                    'completion_level': completion_level,
+                    'habits_completed': habits_completed_today,
+                    'tooltip': tooltip,
+                })
+
+        # --- Mejor racha consecutiva del mes ---
+        best_streak = _calculate_best_streak(days_with_activity, year, month)
+
+        month_stats = {
+            'total_completions': total_completions,
+            'active_days': len(days_with_activity),
+            'best_streak': best_streak,
+        }
+
+    except Exception as e:
+        print(f"ERROR en calendar_view: {e}")
+        flash('Error al cargar el calendario.', 'error')
+
+    # --- Navegación entre meses ---
+    if month == 1:
+        prev_year, prev_month = year - 1, 12
+    else:
+        prev_year, prev_month = year, month - 1
+
+    if month == 12:
+        next_year, next_month = year + 1, 1
+    else:
+        next_year, next_month = year, month + 1
+
+    month_names_es = [
+        '', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ]
+
+    return render_template(
+        'calendar.html',
+        year=year,
+        month=month,
+        month_name=month_names_es[month],
+        calendar_days=calendar_days,
+        habits=user_habits,
+        selected_habit_id=selected_habit_id,
+        month_stats=month_stats,
+        prev_year=prev_year,
+        prev_month=prev_month,
+        next_year=next_year,
+        next_month=next_month,
+    )
+
+
+def _calculate_best_streak(active_days_set: set, year: int, month: int) -> int:
+    """Calcula la racha máxima de días consecutivos con actividad en el mes."""
+    if not active_days_set:
+        return 0
+
+    days_in_month = cal.monthrange(year, month)[1]
+    best = 0
+    current = 0
+
+    for day in range(1, days_in_month + 1):
+        day_str = date(year, month, day).strftime('%Y-%m-%d')
+        if day_str in active_days_set:
+            current += 1
+            best = max(best, current)
+        else:
+            current = 0
+
+    return best
