@@ -2,22 +2,25 @@
 
   <div class="shield-icon">🔐</div>
   <h2>Verificación en Dos Pasos</h2>
-  <p class="subtitle">Se generó un código de seguridad para <strong>{{ email }}</strong></p>
+  <p class="subtitle">Enviamos un código de 6 dígitos a <strong>{{ maskedEmail }}</strong></p>
 
-  <!-- Código visible (entorno de prueba) -->
-  <div class="otp-display" *ngIf="shownCode">
-    <p class="otp-label">🧪 Código de verificación (entorno de prueba):</p>
-    <div class="otp-code">{{ shownCode }}</div>
-    <p class="otp-hint">En producción este código se enviaría por email o SMS.</p>
+  <!-- Enviando... -->
+  <div class="sending-box" *ngIf="sending">
+    <span class="spinner">⏳</span> Enviando código a tu correo...
+  </div>
+
+  <!-- Éxito de envío -->
+  <div class="success-send" *ngIf="successMsg && !sending">
+    <span>📧</span> {{ successMsg }}
   </div>
 
   <!-- Timer -->
-  <div class="timer" [class.expiring]="timeLeft <= 60">
+  <div class="timer" *ngIf="!sending && timeLeft > 0" [class.expiring]="timeLeft <= 60">
     <span>⏱ Expira en: </span><strong>{{ formattedTime }}</strong>
   </div>
 
-  <!-- Input -->
-  <div class="input-group">
+  <!-- Input del código -->
+  <div class="input-group" *ngIf="!sending">
     <label>Ingresa el código de 6 dígitos</label>
     <input
       type="text"
@@ -26,17 +29,23 @@
       [(ngModel)]="otpInput"
       (keyup.enter)="verify()"
       class="otp-input"
+      [disabled]="timeLeft <= 0"
     />
   </div>
 
+  <!-- Error -->
   <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 
-  <button class="btn-verify" (click)="verify()" [disabled]="otpInput.length < 6">
+  <!-- Verificar -->
+  <button class="btn-verify" (click)="verify()"
+          [disabled]="otpInput.length < 6 || sending || timeLeft <= 0"
+          *ngIf="!sending">
     ✅ Verificar Código
   </button>
 
-  <button class="btn-regenerate" (click)="regenerate()">
-    🔄 Generar nuevo código
+  <!-- Reenviar -->
+  <button class="btn-regenerate" (click)="resend()" [disabled]="sending">
+    🔄 Reenviar código al correo
   </button>
 
   <button class="btn-cancel" (click)="cancelLogin()">

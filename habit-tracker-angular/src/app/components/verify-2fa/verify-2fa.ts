@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -11,14 +11,13 @@ import { AuthenticationService } from '../../services/auth';
   templateUrl: './verify-2fa.html',
   styleUrl: './verify-2fa.css'
 })
-export class Verify2fa implements OnInit {
-  otpInput = '';
+export class Verify2fa implements OnInit, OnDestroy {
+  otpInput    = '';
   errorMessage = '';
-  timeLeft = 300; // segundos
+  successMsg   = '';
+  sending      = false;
+  timeLeft     = 300;
   timerInterval: any;
-
-  // Solo para entorno de prueba: muestra el código en pantalla
-  shownCode = '';
   email = '';
 
   constructor(
@@ -27,52 +26,62 @@ export class Verify2fa implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
-    // Si ya verificó en esta sesión, pasar directo
+  async ngOnInit() {
     if (this.otpService.isVerified()) {
       this.router.navigate(['/habits']);
       return;
     }
-    // Si no viene de un login activo, redirigir
     const user = this.authService.getCurrentUser();
     if (!user) { this.router.navigate(['/login']); return; }
 
     this.email = user.email || '';
-    this.shownCode = this.otpService.generateOtp();
-    this.startTimer();
+    await this.sendCode();
   }
 
-  startTimer() {
+  async sendCode() {
+    this.sending = true;
+    this.errorMessage = '';
+    this.successMsg   = '';
+    try {
+      await this.otpService.sendOtp(this.email);
+      this.successMsg = `Código enviado a ${this.email}`;
+      this.restartTimer();
+    } catch (err) {
+      this.errorMessage = 'No se pudo enviar el código. Intenta de nuevo.';
+    } finally {
+      this.sending = false;
+    }
+  }
+
+  restartTimer() {
+    clearInterval(this.timerInterval);
+    this.timeLeft = 300;
     this.timerInterval = setInterval(() => {
       this.timeLeft--;
       if (this.timeLeft <= 0) {
         clearInterval(this.timerInterval);
         this.errorMessage = 'El código ha expirado. Genera uno nuevo.';
-        this.shownCode = '';
+        this.successMsg = '';
       }
     }, 1000);
   }
 
-  regenerate() {
-    clearInterval(this.timerInterval);
-    this.timeLeft = 300;
-    this.otpInput = '';
-    this.errorMessage = '';
-    this.shownCode = this.otpService.generateOtp();
-    this.startTimer();
-  }
-
   verify() {
+    this.errorMessage = '';
     const result = this.otpService.verifyOtp(this.otpInput);
     if (result === 'ok') {
       clearInterval(this.timerInterval);
       this.router.navigate(['/habits']);
     } else if (result === 'expired') {
       this.errorMessage = 'El código ha expirado. Genera uno nuevo.';
-      this.shownCode = '';
     } else {
-      this.errorMessage = 'Código incorrecto. Inténtalo de nuevo.';
+      this.errorMessage = 'Código incorrecto. Revisa tu correo e inténtalo de nuevo.';
     }
+  }
+
+  async resend() {
+    this.otpInput = '';
+    await this.sendCode();
   }
 
   async cancelLogin() {
@@ -86,6 +95,13 @@ export class Verify2fa implements OnInit {
     const m = Math.floor(this.timeLeft / 60).toString().padStart(2, '0');
     const s = (this.timeLeft % 60).toString().padStart(2, '0');
     return `${m}:${s}`;
+  }
+
+  get maskedEmail(): string {
+    const [user, domain] = this.email.split('@');
+    if (!user || !domain) return this.email;
+    const visible = user.slice(0, 2);
+    return `${visible}${'*'.repeat(Math.max(user.length - 2, 3))}@${domain}`;
   }
 
   ngOnDestroy() {

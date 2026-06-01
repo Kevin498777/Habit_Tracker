@@ -86,6 +86,36 @@ h2 {
   background: rgba(45, 55, 72, 0.8);
 }
 .otp-input::placeholder { color: var(--text-muted); letter-spacing: 0.2rem; font-size: 1.2rem; }
+.otp-input:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Sending / success */
+.sending-box {
+  background: rgba(99,102,241,0.08);
+  border: 1px solid rgba(99,102,241,0.3);
+  border-radius: 10px;
+  padding: 0.85rem;
+  color: var(--primary-light);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+}
+.spinner { animation: spin 1s linear infinite; display: inline-block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.success-send {
+  background: rgba(16,185,129,0.1);
+  border: 1px solid rgba(16,185,129,0.3);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  color: var(--success-color);
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+}
 
 /* Error */
 .error {
