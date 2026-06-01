@@ -1,0 +1,141 @@
+/* ===== VERIFY 2FA — Tema futurista oscuro ===== */
+
+.container {
+  max-width: 440px;
+  margin: 70px auto;
+  padding: 2.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  text-align: center;
+}
+
+.shield-icon { font-size: 3rem; line-height: 1; }
+
+h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle { color: var(--text-secondary); margin: 0; font-size: 0.9rem; }
+.subtitle strong { color: var(--text-primary); }
+
+/* OTP display box */
+.otp-display {
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 12px;
+  padding: 1rem;
+}
+.otp-label { color: var(--text-secondary); font-size: 0.8rem; margin: 0 0 0.5rem; }
+.otp-code {
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: 0.5rem;
+  color: var(--primary-light);
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+  margin: 0.25rem 0;
+}
+.otp-hint { color: var(--text-muted); font-size: 0.75rem; margin: 0.5rem 0 0; }
+
+/* Timer */
+.timer {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  background: rgba(45, 55, 72, 0.4);
+  border-radius: 8px;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+}
+.timer strong { color: var(--success-color); }
+.timer.expiring strong { color: var(--danger-color); }
+
+/* Input */
+.input-group { display: flex; flex-direction: column; gap: 0.4rem; text-align: left; }
+.input-group label { color: var(--text-primary); font-weight: 600; font-size: 0.9rem; }
+
+.otp-input {
+  padding: 0.9rem 1rem;
+  background: rgba(45, 55, 72, 0.5);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  color: var(--primary-light);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.4rem;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+.otp-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  background: rgba(45, 55, 72, 0.8);
+}
+.otp-input::placeholder { color: var(--text-muted); letter-spacing: 0.2rem; font-size: 1.2rem; }
+
+/* Error */
+.error {
+  color: var(--danger-color);
+  font-size: 0.875rem;
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 3px solid var(--danger-color);
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  text-align: left;
+  margin: 0;
+}
+
+/* Buttons */
+.btn-verify {
+  padding: 0.85rem;
+  background: var(--gradient);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.btn-verify:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99, 102, 241, 0.45); }
+.btn-verify:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-regenerate {
+  padding: 0.65rem;
+  background: transparent;
+  color: var(--primary-light);
+  border: 1px solid var(--primary-color);
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+.btn-regenerate:hover { background: rgba(99, 102, 241, 0.12); transform: translateY(-1px); }
+
+.btn-cancel {
+  padding: 0.55rem;
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: color 0.2s;
+}
+.btn-cancel:hover { color: var(--text-secondary); }

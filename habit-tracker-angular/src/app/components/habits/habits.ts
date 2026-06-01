@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HabitsService } from '../../services/habits';
 import { AuthenticationService } from '../../services/auth';
+import { OtpService } from '../../services/otp';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -28,6 +29,7 @@ export class Habits implements OnInit {
   constructor(
     private habitsService: HabitsService,
     private authService: AuthenticationService,
+    private otpService: OtpService,
     private router: Router
   ) {}
 
@@ -99,6 +101,7 @@ export class Habits implements OnInit {
   goToContact()   { this.router.navigate(['/contact']); }
 
   async logout() {
+    this.otpService.clear();
     await this.authService.logout();
     this.router.navigate(['/login']);
   }

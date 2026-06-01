@@ -1,0 +1,46 @@
+<div class="container fade-in">
+
+  <div class="shield-icon">🔐</div>
+  <h2>Verificación en Dos Pasos</h2>
+  <p class="subtitle">Se generó un código de seguridad para <strong>{{ email }}</strong></p>
+
+  <!-- Código visible (entorno de prueba) -->
+  <div class="otp-display" *ngIf="shownCode">
+    <p class="otp-label">🧪 Código de verificación (entorno de prueba):</p>
+    <div class="otp-code">{{ shownCode }}</div>
+    <p class="otp-hint">En producción este código se enviaría por email o SMS.</p>
+  </div>
+
+  <!-- Timer -->
+  <div class="timer" [class.expiring]="timeLeft <= 60">
+    <span>⏱ Expira en: </span><strong>{{ formattedTime }}</strong>
+  </div>
+
+  <!-- Input -->
+  <div class="input-group">
+    <label>Ingresa el código de 6 dígitos</label>
+    <input
+      type="text"
+      maxlength="6"
+      placeholder="_ _ _ _ _ _"
+      [(ngModel)]="otpInput"
+      (keyup.enter)="verify()"
+      class="otp-input"
+    />
+  </div>
+
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <button class="btn-verify" (click)="verify()" [disabled]="otpInput.length < 6">
+    ✅ Verificar Código
+  </button>
+
+  <button class="btn-regenerate" (click)="regenerate()">
+    🔄 Generar nuevo código
+  </button>
+
+  <button class="btn-cancel" (click)="cancelLogin()">
+    ← Cancelar y volver al login
+  </button>
+
+</div>

@@ -21,7 +21,7 @@ export class Login {
   async onLogin() {
     try {
       await this.authService.login(this.email, this.password);
-      this.router.navigate(['/habits']);
+      this.router.navigate(['/verify-2fa']);
     } catch (error: any) {
       this.errorMessage = 'Correo o contraseña incorrectos';
     }
@@ -30,7 +30,7 @@ export class Login {
   async onGoogleLogin() {
     try {
       await this.authService.loginWithGoogle();
-      this.router.navigate(['/habits']);
+      this.router.navigate(['/verify-2fa']);
     } catch (error: any) {
       this.errorMessage = 'Error al iniciar sesión con Google';
     }
