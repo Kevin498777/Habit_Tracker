@@ -1,24 +1,36 @@
-<div class="container">
+<div class="container fade-in">
   <h2>Iniciar Sesión</h2>
 
-  <input type="email" placeholder="Correo electrónico"
-         [(ngModel)]="email" />
+  <div class="form-group">
+    <label for="loginEmail">Usuario o Email</label>
+    <input id="loginEmail" type="email" placeholder="Ingresa tu correo electrónico"
+           [(ngModel)]="email" />
+  </div>
 
-  <input type="password" placeholder="Contraseña"
-         [(ngModel)]="password" />
+  <div class="form-group">
+    <label for="loginPassword">Contraseña</label>
+    <input id="loginPassword" type="password" placeholder="Ingresa tu contraseña"
+           [(ngModel)]="password" />
+  </div>
+
+  <div class="form-check">
+    <input type="checkbox" id="remember" [(ngModel)]="rememberMe" />
+    <label for="remember">Recordar mis datos</label>
+  </div>
 
   <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 
-  <button (click)="onLogin()">Entrar</button>
+  <button (click)="onLogin()">Iniciar Sesión</button>
 
-  <div class="divider">
-    <span>o</span>
-  </div>
+  <div class="divider"><span>o</span></div>
 
   <button class="google" (click)="onGoogleLogin()">
     <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" />
     Continuar con Google
   </button>
 
-  <button class="secondary" (click)="goToRegister()">¿No tienes cuenta? Regístrate</button>
+  <div class="link-row">
+    <span>¿No tienes una cuenta?</span>
+    <button class="secondary" (click)="goToRegister()">Crear Cuenta</button>
+  </div>
 </div>

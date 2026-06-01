@@ -1,17 +1,45 @@
-<div class="container">
+<div class="container fade-in">
   <h2>Crear Cuenta</h2>
 
-  <input type="email" placeholder="Correo electrónico"
-         [(ngModel)]="email" />
+  <div class="form-group">
+    <label for="regUsername">Nombre de Usuario</label>
+    <input id="regUsername" type="text" placeholder="Elige un nombre de usuario único"
+           [(ngModel)]="username" />
+    <small>Este será tu nombre visible en la aplicación.</small>
+  </div>
 
-  <input type="password" placeholder="Contraseña"
-         [(ngModel)]="password" />
+  <div class="form-group">
+    <label for="regEmail">Correo Electrónico</label>
+    <input id="regEmail" type="email" placeholder="tu@email.com"
+           [(ngModel)]="email" />
+  </div>
 
-  <input type="password" placeholder="Confirmar contraseña"
-         [(ngModel)]="confirmPassword" />
+  <div class="form-row">
+    <div class="form-group">
+      <label for="regPassword">Contraseña</label>
+      <input id="regPassword" type="password" placeholder="Mínimo 6 caracteres"
+             [(ngModel)]="password" />
+    </div>
+    <div class="form-group">
+      <label for="regConfirm">Confirmar Contraseña</label>
+      <input id="regConfirm" type="password" placeholder="Repite tu contraseña"
+             [(ngModel)]="confirmPassword" />
+    </div>
+  </div>
+
+  <div class="form-check">
+    <input type="checkbox" id="terms" [(ngModel)]="acceptedTerms" />
+    <label for="terms">
+      Acepto los <a (click)="goToTerms()">términos y condiciones</a>
+    </label>
+  </div>
 
   <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 
-  <button (click)="onRegister()">Registrarse</button>
-  <button class="secondary" (click)="goToLogin()">¿Ya tienes cuenta? Inicia sesión</button>
+  <button (click)="onRegister()">Crear Cuenta</button>
+
+  <div class="link-row">
+    <span>¿Ya tienes una cuenta?</span>
+    <button class="secondary" (click)="goToLogin()">Iniciar Sesión</button>
+  </div>
 </div>

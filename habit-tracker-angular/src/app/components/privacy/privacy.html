@@ -1,25 +1,172 @@
-<div class="container">
+<div class="container fade-in">
   <button class="btn-back" (click)="goBack()">← Volver</button>
   <div class="card">
-    <h2>🔒 Política de Privacidad</h2>
-    <p class="date">Última actualización: {{ currentDate }}</p>
 
-    <h4>1. Información que recopilamos</h4>
-    <p>Recopilamos información que nos proporcionas directamente, como tu correo electrónico y los hábitos que registras en la aplicación.</p>
+    <div class="card-header-section">
+      <h2>🔒 Política de Privacidad</h2>
+      <p class="date">Última actualización: {{ currentDate }}</p>
+    </div>
 
-    <h4>2. Cómo usamos tu información</h4>
-    <p>Usamos tu información exclusivamente para proporcionarte el servicio de seguimiento de hábitos. No vendemos ni compartimos tus datos con terceros.</p>
+    <!-- 1. Introducción -->
+    <section>
+      <h4>1. Introducción</h4>
+      <p>En <strong>HabitTracker</strong>, valoramos y respetamos tu privacidad. Esta Política de Privacidad describe cómo recopilamos, usamos, almacenamos y protegemos tu información personal cuando utilizas nuestra aplicación de seguimiento de hábitos.</p>
+      <p>Al utilizar nuestro servicio, aceptas las prácticas descritas en esta política.</p>
+    </section>
 
-    <h4>3. Almacenamiento de datos</h4>
-    <p>Tus datos se almacenan de forma segura en Firebase (Google Cloud). Puedes solicitar la eliminación de tus datos en cualquier momento.</p>
+    <!-- 2. Responsable -->
+    <section>
+      <h4>2. Responsable del Tratamiento</h4>
+      <div class="info-block">
+        <p><strong>HabitTracker</strong><br>
+        Email: privacidad&#64;habittracker.com<br>
+        Dirección: Calle Galeana 13, Michoacán<br>
+        CIF: A-12345678</p>
+      </div>
+    </section>
 
-    <h4>4. Cookies</h4>
-    <p>Utilizamos cookies esenciales para el funcionamiento del sitio. Puedes gestionar tus preferencias de cookies en cualquier momento.</p>
+    <!-- 3. Información -->
+    <section>
+      <h4>3. Información que Recopilamos</h4>
+      <p>Recopilamos diferentes tipos de información para proporcionarte nuestros servicios:</p>
+      <h5>3.1 Información que nos proporcionas directamente</h5>
+      <ul class="styled-list">
+        <li><strong>Datos de registro:</strong> Nombre de usuario, correo electrónico y contraseña</li>
+        <li><strong>Datos de hábitos:</strong> Nombre, descripción y seguimiento de tus hábitos</li>
+        <li><strong>Datos de actividad:</strong> Fechas de completado, estadísticas y progreso</li>
+        <li><strong>Preferencias:</strong> Configuración de notificaciones y preferencias de visualización</li>
+      </ul>
+      <h5>3.2 Información recopilada automáticamente</h5>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Tipo de Dato</th><th>Finalidad</th><th>Ejemplo</th></tr></thead>
+          <tbody>
+            <tr><td>Datos de uso</td><td>Mejorar la experiencia del usuario</td><td>Tiempo de sesión, páginas visitadas</td></tr>
+            <tr><td>Datos técnicos</td><td>Diagnóstico y soporte técnico</td><td>Versión del navegador, sistema operativo</td></tr>
+            <tr><td>Cookies</td><td>Funcionalidad básica y preferencias</td><td>Preferencias de idioma, sesión de usuario</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-    <h4>5. Tus derechos</h4>
-    <p>Tienes derecho a acceder, rectificar y eliminar tus datos personales. Para ejercer estos derechos contáctanos en privacidad&#64;habittracker.com</p>
+    <!-- 4. Finalidades -->
+    <section>
+      <h4>4. Finalidades del Tratamiento</h4>
+      <div class="two-col">
+        <div class="info-card border-primary">
+          <h5>🎯 Finalidad Principal</h5>
+          <ul>
+            <li>Proporcionar el servicio de seguimiento de hábitos</li>
+            <li>Gestionar tu cuenta de usuario</li>
+            <li>Mostrar tu progreso y estadísticas</li>
+            <li>Enviar notificaciones y recordatorios</li>
+          </ul>
+        </div>
+        <div class="info-card border-success">
+          <h5>📈 Mejora del Servicio</h5>
+          <ul>
+            <li>Analizar patrones de uso</li>
+            <li>Desarrollar nuevas funcionalidades</li>
+            <li>Personalizar tu experiencia</li>
+            <li>Optimizar el rendimiento</li>
+          </ul>
+        </div>
+      </div>
+      <div class="alert alert-info">
+        <strong>🔍 Base legal:</strong> El tratamiento se basa en tu consentimiento (art. 6.1.a RGPD) y en la ejecución del contrato (art. 6.1.b RGPD).
+      </div>
+    </section>
 
-    <h4>6. Contacto</h4>
-    <p>Para cualquier consulta sobre privacidad: <strong>privacidad&#64;habittracker.com</strong></p>
+    <!-- 5. Compartición -->
+    <section>
+      <h4>5. Compartición de Datos</h4>
+      <p><strong>No vendemos ni alquilamos tu información personal a terceros.</strong> Solo compartimos datos en las siguientes situaciones:</p>
+      <div class="three-col text-center">
+        <div class="stat-item-card"><h3 class="text-warning">1</h3><p>Proveedores de Servicios</p><small>Hosting, email, analíticas</small></div>
+        <div class="stat-item-card"><h3 class="text-danger">2</h3><p>Requerimientos Legales</p><small>Cumplimiento de leyes</small></div>
+        <div class="stat-item-card"><h3 class="text-success">3</h3><p>Transferencias Empresariales</p><small>Fusiones o adquisiciones</small></div>
+      </div>
+    </section>
+
+    <!-- 6. Derechos -->
+    <section>
+      <h4>6. Tus Derechos</h4>
+      <p>Como usuario, tienes los siguientes derechos respecto a tus datos personales:</p>
+      <div class="accordion">
+        <div class="acc-item" *ngFor="let right of rights">
+          <button class="acc-btn" (click)="toggleRight(right)">
+            {{ right.icon }} {{ right.title }}
+            <span class="acc-caret" [class.open]="right.open">▾</span>
+          </button>
+          <div class="acc-body" [class.show]="right.open">{{ right.body }}</div>
+        </div>
+      </div>
+      <div class="alert alert-warning">
+        <strong>⚖️ Ejercicio de derechos:</strong> Para ejercer tus derechos, envía un email a <strong>privacidad&#64;habittracker.com</strong> con tu solicitud. Responderemos en un plazo máximo de 30 días.
+      </div>
+    </section>
+
+    <!-- 7. Retención -->
+    <section>
+      <h4>7. Período de Retención</h4>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Tipo de Dato</th><th>Período de Retención</th><th>Criterio</th></tr></thead>
+          <tbody>
+            <tr><td>Datos de cuenta activa</td><td>Mientras la cuenta esté activa</td><td>Necesario para el servicio</td></tr>
+            <tr><td>Datos de hábitos</td><td>3 años tras última actividad</td><td>Interés legítimo y análisis</td></tr>
+            <tr><td>Datos de facturación</td><td>10 años</td><td>Obligación legal</td></tr>
+            <tr><td>Cookies</td><td>Según tipo de cookie</td><td>Preferencias del usuario</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 8. Seguridad -->
+    <section>
+      <h4>8. Medidas de Seguridad</h4>
+      <div class="three-col text-center">
+        <div class="security-card"><div class="sec-icon">🔐</div><h6>Cifrado de Datos</h6><small>AES-256 para datos en tránsito y en reposo</small></div>
+        <div class="security-card"><div class="sec-icon">🛡️</div><h6>Autenticación Segura</h6><small>Contraseñas con hash bcrypt</small></div>
+        <div class="security-card"><div class="sec-icon">📊</div><h6>Auditorías Regulares</h6><small>Revisiones de seguridad periódicas</small></div>
+      </div>
+    </section>
+
+    <!-- 9. Contacto -->
+    <section>
+      <h4>9. Contacto y Reclamaciones</h4>
+      <div class="two-col">
+        <div class="info-card">
+          <h5>📧 Contacto</h5>
+          <p><strong>Email:</strong> privacidad&#64;habittracker.com</p>
+          <p><strong>Teléfono:</strong> +34 900 123 456</p>
+          <p><strong>Horario:</strong> L-V 9:00-18:00</p>
+        </div>
+        <div class="info-card">
+          <h5>⚖️ Autoridad de Control</h5>
+          <p>Si consideras que hemos vulnerado tus derechos, puedes presentar una reclamación ante la Agencia de Protección de Datos.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Cambios -->
+    <section>
+      <h4>10. Cambios en esta Política</h4>
+      <p>Podemos actualizar esta política periódicamente. Te notificaremos sobre cambios significativos mediante notificación en la aplicación, email a la dirección registrada y actualización de la fecha en esta página.</p>
+    </section>
+
+    <!-- Acciones -->
+    <div class="border-top-section">
+      <div class="action-btns">
+        <button class="btn-outline" (click)="goToTerms()">📋 Ver Términos y Condiciones</button>
+        <div class="btn-group-right">
+          <button class="btn-success" (click)="goBack()">🏠 Volver al Inicio</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer-section">
+      <small>Documento ID: PP-{{ docId }} | Versión: 2.1 | RGPD Compliant</small>
+    </div>
   </div>
 </div>

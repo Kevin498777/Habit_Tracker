@@ -11,16 +11,26 @@ import { CommonModule } from '@angular/common';
   styleUrl: './register.css'
 })
 export class Register {
+  username = '';
   email = '';
   password = '';
   confirmPassword = '';
+  acceptedTerms = false;
   errorMessage = '';
 
   constructor(private authService: AuthenticationService, private router: Router) {}
 
   async onRegister() {
+    if (!this.acceptedTerms) {
+      this.errorMessage = 'Debes aceptar los términos y condiciones';
+      return;
+    }
     if (this.password !== this.confirmPassword) {
       this.errorMessage = 'Las contraseñas no coinciden';
+      return;
+    }
+    if (this.password.length < 6) {
+      this.errorMessage = 'La contraseña debe tener al menos 6 caracteres';
       return;
     }
     try {
@@ -31,7 +41,6 @@ export class Register {
     }
   }
 
-  goToLogin() {
-    this.router.navigate(['/login']);
-  }
+  goToLogin()  { this.router.navigate(['/login']); }
+  goToTerms()  { this.router.navigate(['/terms']); }
 }

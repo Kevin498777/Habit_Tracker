@@ -1,95 +1,153 @@
-<div class="container">
+<div class="page-wrapper fade-in">
+  <div class="main-col">
 
-  <!-- Header -->
-  <div class="header">
-    <h2>🏃 Mis Hábitos</h2>
-    <div class="header-actions">
-      <button class="btn-profile" (click)="goToProfile()">👤 Perfil</button>
-      <button class="btn-logout" (click)="logout()">Cerrar sesión</button>
-    </div>
-  </div>
-
-  <!-- Estadísticas -->
-  <div class="stats-grid">
-    <div class="stat-card">
-      <h3>{{ totalHabits }}</h3>
-      <p>Total</p>
-    </div>
-    <div class="stat-card green">
-      <h3>{{ todayCompleted }}</h3>
-      <p>Hoy</p>
-    </div>
-    <div class="stat-card yellow">
-      <h3>{{ weekCompletions }}</h3>
-      <p>Esta semana</p>
-    </div>
-    <div class="stat-card purple">
-      <h3>{{ completionRate }}%</h3>
-      <p>Progreso</p>
-    </div>
-  </div>
-
-  <!-- Barra de progreso -->
-  <div class="progress-container">
-    <div class="progress-bar">
-      <div class="progress-fill" [style.width.%]="completionRate"></div>
-    </div>
-    <p class="motivational">{{ getMotivationalMessage() }}</p>
-  </div>
-
-  <!-- Formulario agregar -->
-  <div class="form-card">
-    <h3>➕ Agregar Nuevo Hábito</h3>
-    <input type="text" placeholder="Nombre del hábito *"
-           [(ngModel)]="newHabitName" />
-    <input type="text" placeholder="Descripción (opcional)"
-           [(ngModel)]="newHabitDescription" />
-    <button class="btn-primary" (click)="addHabit()">Agregar Hábito</button>
-  </div>
-
-  <!-- Modal edición -->
-  <div class="modal-overlay" *ngIf="editingHabit">
-    <div class="modal">
-      <h3>✏️ Editar Hábito</h3>
-      <input type="text" placeholder="Nombre *" [(ngModel)]="editName" />
-      <input type="text" placeholder="Descripción" [(ngModel)]="editDescription" />
-      <div class="modal-actions">
-        <button class="btn-secondary" (click)="cancelEdit()">Cancelar</button>
-        <button class="btn-primary" (click)="saveEdit()">Guardar</button>
+    <!-- Header -->
+    <div class="header">
+      <div>
+        <h2>Mis Hábitos Diarios</h2>
+        <span class="code-badge">Usuario: {{ userName }}</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-calendar" (click)="goToCalendar()">📅 Calendario</button>
       </div>
     </div>
-  </div>
 
-  <!-- Lista vacía -->
-  <div class="empty" *ngIf="habits.length === 0">
-    <span>📝</span>
-    <p>No tienes hábitos registrados todavía</p>
-    <small>¡Comienza agregando tu primer hábito arriba!</small>
-  </div>
-
-  <!-- Lista de hábitos -->
-  <div class="habit-card" *ngFor="let habit of habits"
-       [class.completed]="isCompletedToday(habit)">
-    <div class="habit-info">
-      <div class="habit-title">
-        <h3>{{ habit.name }}</h3>
-        <span class="badge-completed" *ngIf="isCompletedToday(habit)">✅ Completado hoy</span>
+    <!-- Formulario agregar -->
+    <div class="form-card fade-in">
+      <h3>➕ Agregar Nuevo Hábito</h3>
+      <div class="form-row">
+        <input type="text" placeholder="Nombre del hábito *"
+               [(ngModel)]="newHabitName" />
+        <input type="text" placeholder="Descripción (opcional)"
+               [(ngModel)]="newHabitDescription" />
       </div>
-      <p *ngIf="habit.description">{{ habit.description }}</p>
-      <small>Completado {{ habit.completed_dates?.length || 0 }} veces</small>
+      <button class="btn-primary" (click)="addHabit()">➕ Agregar Hábito</button>
     </div>
-    <div class="habit-actions">
-      <button class="btn-complete" *ngIf="!isCompletedToday(habit)"
-              (click)="completeHabit(habit.id)">✅ Completar</button>
-      <button class="btn-edit" (click)="startEdit(habit)">✏️</button>
-      <button class="btn-delete" (click)="deleteHabit(habit.id)">🗑️</button>
+
+    <!-- Modal edición -->
+    <div class="modal-overlay" *ngIf="editingHabit">
+      <div class="modal">
+        <h3>✏️ Editar Hábito</h3>
+        <input type="text" placeholder="Nombre *" [(ngModel)]="editName" />
+        <input type="text" placeholder="Descripción" [(ngModel)]="editDescription" />
+        <div class="modal-actions">
+          <button class="btn-secondary" (click)="cancelEdit()">Cancelar</button>
+          <button class="btn-primary" (click)="saveEdit()">Guardar</button>
+        </div>
+      </div>
     </div>
-  </div>
-  <!-- Footer -->
+
+    <!-- Lista vacía -->
+    <div class="empty" *ngIf="habits.length === 0">
+      <span>📝</span>
+      <p>No tienes hábitos registrados todavía</p>
+      <small>¡Comienza agregando tu primer hábito arriba!</small>
+    </div>
+
+    <!-- Lista de hábitos -->
+    <div class="habit-list-section" *ngIf="habits.length > 0">
+      <div class="section-title">📊 Mis Hábitos</div>
+
+      <div class="habit-card" *ngFor="let habit of habits"
+           [class.completed]="isCompletedToday(habit)">
+        <div class="habit-info">
+          <div class="habit-title">
+            <h3>{{ habit.name }}</h3>
+            <span class="badge-completed" *ngIf="isCompletedToday(habit)">✅ Completado Hoy</span>
+          </div>
+          <p *ngIf="habit.description">{{ habit.description }}</p>
+          <div class="habit-meta">
+            <small>✅ Completado: {{ habit.completed_dates?.length || 0 }} veces</small>
+            <small *ngIf="habit.completed_dates?.length">
+              🗓️ Última vez: {{ habit.completed_dates[habit.completed_dates.length - 1] }}
+            </small>
+          </div>
+        </div>
+        <div class="habit-actions">
+          <button class="btn-complete" *ngIf="!isCompletedToday(habit)"
+                  (click)="completeHabit(habit.id)">✅ Completar Hoy</button>
+          <button class="btn-edit" (click)="startEdit(habit)">✏️</button>
+          <button class="btn-delete" (click)="deleteHabit(habit.id)">🗑️</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
     <div class="footer">
-        <a (click)="goToPrivacy()">Política de Privacidad</a> |
-        <a (click)="goToTerms()">Términos y Condiciones</a> |
-        <a (click)="goToContact()">Contacto</a>
+      <a (click)="goToPrivacy()">Política de Privacidad</a> |
+      <a (click)="goToTerms()">Términos y Condiciones</a> |
+      <a (click)="goToContact()">Contacto</a>
     </div>
 
+  </div><!-- /main-col -->
+
+  <!-- Sidebar -->
+  <div class="sidebar-col">
+
+    <!-- Resumen rápido -->
+    <div class="side-card fade-in">
+      <div class="side-card-header">Resumen Rápido</div>
+      <div class="side-card-body">
+        <div class="stats-mini-grid">
+          <div class="stat-mini">
+            <h3 class="color-primary">{{ totalHabits }}</h3>
+            <p>Total</p>
+          </div>
+          <div class="stat-mini">
+            <h3 class="color-success">{{ todayCompleted }}</h3>
+            <p>Hoy</p>
+          </div>
+          <div class="stat-mini full-width">
+            <h3 class="color-warning">{{ weekCompletions }}</h3>
+            <p>Esta Semana</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Acciones rápidas -->
+    <div class="side-card fade-in">
+      <div class="side-card-header">⚡ Acciones Rápidas</div>
+      <div class="side-card-body actions-grid">
+        <button class="action-btn" (click)="goToProfile()">👤 Mi Perfil</button>
+        <button class="action-btn" (click)="goToCalendar()">📅 Calendario</button>
+        <button class="action-btn danger" (click)="logout()">🚪 Cerrar Sesión</button>
+      </div>
+    </div>
+
+    <!-- Progreso diario -->
+    <div class="side-card fade-in">
+      <div class="side-card-header">Progreso Diario</div>
+      <div class="side-card-body">
+        <div class="progress-center">
+          <h3 class="color-primary">{{ completionRate }}%</h3>
+          <p>Completado Hoy</p>
+        </div>
+
+        <div class="stats-details">
+          <div class="stat-detail">
+            <span>Total:</span>
+            <span class="fw-bold">{{ totalHabits }}</span>
+          </div>
+          <div class="stat-detail">
+            <span>Completados:</span>
+            <span class="fw-bold color-success">{{ todayCompleted }}</span>
+          </div>
+          <div class="stat-detail">
+            <span>Pendientes:</span>
+            <span class="fw-bold color-warning">{{ totalHabits - todayCompleted }}</span>
+          </div>
+        </div>
+
+        <div class="progress-bar-wrap">
+          <div class="progress-track">
+            <div class="progress-fill" [style.width.%]="completionRate"></div>
+          </div>
+        </div>
+
+        <p class="motivational">{{ getMotivationalMessage() }}</p>
+      </div>
+    </div>
+
+  </div><!-- /sidebar-col -->
 </div>

@@ -28,6 +28,13 @@ export class CookiesBanner implements OnInit {
     this.showBanner = false;
   }
 
+  customize() {
+    // Guarda preferencia parcial y redirige a privacy para configurar
+    localStorage.setItem('cookie_consent', 'custom');
+    this.showBanner = false;
+    this.router.navigate(['/privacy']);
+  }
+
   goToPolicy() {
     this.router.navigate(['/privacy']);
   }

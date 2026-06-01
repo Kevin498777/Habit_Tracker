@@ -1,0 +1,49 @@
+<nav class="navbar">
+  <div class="navbar-container">
+
+    <!-- Brand -->
+    <a class="navbar-brand" (click)="navigate(isLoggedIn ? '/habits' : '/login')">HabitTracker</a>
+
+    <!-- Hamburger -->
+    <button class="navbar-toggler" (click)="toggleMenu()" [class.open]="isMenuOpen">
+      <span></span><span></span><span></span>
+    </button>
+
+    <!-- Links -->
+    <div class="navbar-collapse" [class.show]="isMenuOpen">
+
+      <!-- Left links (auth only) -->
+      <ul class="navbar-nav" *ngIf="isLoggedIn">
+        <li><a class="nav-link" (click)="navigate('/habits')">Mis Hábitos</a></li>
+        <li><a class="nav-link" (click)="navigate('/calendar')">📅 Calendario</a></li>
+        <li><a class="nav-link" (click)="navigate('/profile')">Perfil</a></li>
+      </ul>
+
+      <!-- Right links -->
+      <div class="navbar-right">
+        <a class="nav-link nav-icon" (click)="navigate('/privacy')" title="Política de Cookies">🍪</a>
+
+        <!-- Logged in: dropdown -->
+        <div class="dropdown-wrapper" *ngIf="isLoggedIn">
+          <button class="dropdown-toggle" (click)="toggleDropdown()">
+            <span class="avatar-sm">{{ initial }}</span>
+            {{ displayName }}
+            <span class="caret" [class.open]="isDropdownOpen">▾</span>
+          </button>
+          <ul class="dropdown-menu" [class.show]="isDropdownOpen">
+            <li><a (click)="navigate('/profile')">Mi Perfil</a></li>
+            <li class="divider"></li>
+            <li><a class="text-danger" (click)="logout()">Cerrar Sesión</a></li>
+          </ul>
+        </div>
+
+        <!-- Not logged in -->
+        <ng-container *ngIf="!isLoggedIn">
+          <a class="nav-link" (click)="navigate('/login')">Iniciar Sesión</a>
+          <a class="nav-link nav-link-accent" (click)="navigate('/register')">Registrarse</a>
+        </ng-container>
+      </div>
+
+    </div>
+  </div>
+</nav>

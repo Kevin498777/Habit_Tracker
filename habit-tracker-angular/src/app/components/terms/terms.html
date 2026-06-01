@@ -1,28 +1,178 @@
-<div class="container">
+<div class="container fade-in">
   <button class="btn-back" (click)="goBack()">← Volver</button>
   <div class="card">
-    <h2>📋 Términos y Condiciones</h2>
-    <p class="date">Última actualización: {{ currentDate }}</p>
 
-    <h4>1. Aceptación de los términos</h4>
-    <p>Al usar HabitTracker aceptas estos términos. Si no estás de acuerdo, no uses el servicio.</p>
+    <div class="card-header-section">
+      <h2>📋 Términos y Condiciones de Uso</h2>
+      <p class="date">Última actualización: {{ currentDate }}</p>
+    </div>
 
-    <h4>2. Descripción del servicio</h4>
-    <p>HabitTracker es una aplicación de seguimiento de hábitos personales. El servicio se proporciona tal como está.</p>
+    <!-- Aviso -->
+    <div class="alert alert-warning">
+      <strong>⚠️ Importante:</strong> Al registrarte y utilizar HabitTracker, aceptas estos Términos y Condiciones. Te recomendamos leerlos detenidamente.
+    </div>
 
-    <h4>3. Cuenta de usuario</h4>
-    <p>Eres responsable de mantener la confidencialidad de tu cuenta y contraseña. Notifícanos inmediatamente si detectas uso no autorizado.</p>
+    <!-- 1. Aceptación -->
+    <section>
+      <h4>1. Aceptación de los Términos</h4>
+      <p>Al acceder y utilizar HabitTracker (el "Servicio"), aceptas quedar vinculado por estos Términos y Condiciones. Si no estás de acuerdo con alguna parte de estos términos, no podrás acceder al Servicio.</p>
+      <div class="info-block">
+        <h6>Información Esencial</h6>
+        <ul class="styled-list">
+          <li><strong>Servicio:</strong> HabitTracker – Aplicación web de seguimiento de hábitos</li>
+          <li><strong>Proveedor:</strong> HabitTracker Technologies S.L.</li>
+          <li><strong>Versión:</strong> {{ docId }}</li>
+          <li><strong>Edad Mínima:</strong> 16 años</li>
+        </ul>
+      </div>
+    </section>
 
-    <h4>4. Uso aceptable</h4>
-    <p>Te comprometes a usar el servicio únicamente para fines lícitos y de acuerdo con estos términos.</p>
+    <!-- 2. Definiciones -->
+    <section>
+      <h4>2. Definiciones</h4>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Término</th><th>Definición</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Servicio</strong></td><td>La aplicación web HabitTracker accesible en nuestro dominio</td></tr>
+            <tr><td><strong>Usuario</strong></td><td>Persona que se registra y utiliza el Servicio</td></tr>
+            <tr><td><strong>Cuenta</strong></td><td>Perfil único creado por el Usuario para acceder al Servicio</td></tr>
+            <tr><td><strong>Contenido</strong></td><td>Hábitos, datos, texto e información introducida por el Usuario</td></tr>
+            <tr><td><strong>Suscripción</strong></td><td>Plan de pago para acceder a funcionalidades premium</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-    <h4>5. Propiedad intelectual</h4>
-    <p>El contenido y diseño de HabitTracker son propiedad de sus creadores. No puedes reproducir ni distribuir sin autorización.</p>
+    <!-- 3. Registro -->
+    <section>
+      <h4>3. Registro y Cuenta de Usuario</h4>
+      <h5>3.1 Requisitos de Registro</h5>
+      <ul class="styled-list">
+        <li>Debes tener al menos 16 años de edad</li>
+        <li>Proporcionar información veraz, actual y completa</li>
+        <li>Mantener la confidencialidad de tus credenciales</li>
+        <li>Notificarnos inmediatamente cualquier uso no autorizado</li>
+      </ul>
+      <h5>3.2 Responsabilidades de la Cuenta</h5>
+      <div class="alert alert-info">
+        <strong>Eres responsable de:</strong>
+        <ul class="styled-list mt-2">
+          <li>Todas las actividades realizadas bajo tu cuenta</li>
+          <li>Mantener tu contraseña segura y confidencial</li>
+          <li>Cualquier daño o pérdida derivada del incumplimiento</li>
+          <li>Actualizar tu información de contacto</li>
+        </ul>
+      </div>
+    </section>
 
-    <h4>6. Limitación de responsabilidad</h4>
-    <p>HabitTracker no se hace responsable de pérdidas de datos o interrupciones del servicio.</p>
+    <!-- 4. Uso -->
+    <section>
+      <h4>4. Uso Aceptable del Servicio</h4>
+      <div class="two-col">
+        <div class="info-card border-success">
+          <h5 class="text-success">✅ Conductas Permitidas</h5>
+          <ul class="styled-list">
+            <li>Crear y gestionar hábitos personales</li>
+            <li>Compartir tu progreso (opcional)</li>
+            <li>Utilizar el Servicio para desarrollo personal</li>
+            <li>Proporcionar feedback constructivo</li>
+          </ul>
+        </div>
+        <div class="info-card border-danger">
+          <h5 class="text-danger">🚫 Conductas Prohibidas</h5>
+          <ul class="styled-list">
+            <li>Usar el Servicio para actividades ilegales</li>
+            <li>Intentar acceder a cuentas de otros usuarios</li>
+            <li>Interferir con la seguridad del Servicio</li>
+            <li>Publicar contenido ofensivo o inapropiado</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-    <h4>7. Modificaciones</h4>
-    <p>Nos reservamos el derecho de modificar estos términos en cualquier momento con previo aviso.</p>
+    <!-- 5. Propiedad Intelectual -->
+    <section>
+      <h4>5. Propiedad Intelectual</h4>
+      <div class="two-col">
+        <div class="info-card">
+          <h5>💡 Derechos de HabitTracker</h5>
+          <p>El código fuente, diseño, logotipos y software relacionado con el Servicio son propiedad exclusiva de HabitTracker Technologies S.L. y están protegidos por leyes de propiedad intelectual.</p>
+        </div>
+        <div class="info-card">
+          <h5>📝 Licencia de Uso</h5>
+          <p>Te concedemos una licencia limitada, no exclusiva, intransferible y revocable para utilizar el Servicio. Esta licencia no incluye el derecho a modificar, copiar o distribuir el Servicio.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Limitación de Responsabilidad -->
+    <section>
+      <h4>6. Limitación de Responsabilidad</h4>
+      <div class="alert alert-danger">
+        <h5>🚫 Exclusiones y Limitaciones</h5>
+        <ul class="styled-list">
+          <li>El Servicio se proporciona "tal cual" y "según disponibilidad"</li>
+          <li>No garantizamos la disponibilidad ininterrumpida o libre de errores</li>
+          <li>No somos responsables por pérdidas indirectas o consecuentes</li>
+          <li>Nuestra responsabilidad máxima es el importe pagado en los últimos 12 meses</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 7. Suscripciones -->
+    <section>
+      <h4>7. Suscripciones y Pagos</h4>
+      <div class="two-col">
+        <div class="info-card">
+          <h5>💰 Planes Disponibles</h5>
+          <ul class="styled-list">
+            <li><strong>Gratuito:</strong> Funcionalidades básicas</li>
+            <li><strong>Premium:</strong> €9.99/mes – Todas las funciones</li>
+            <li><strong>Anual:</strong> €99.99/año – Ahorro del 17%</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h5>🔄 Renovación y Cancelación</h5>
+          <ul class="styled-list">
+            <li>Renovación automática al final del período</li>
+            <li>Cancelación en cualquier momento</li>
+            <li>Sin reembolsos por períodos no utilizados</li>
+            <li>Facturación recurrente hasta cancelación</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Contacto -->
+    <section>
+      <h4>8. Contacto</h4>
+      <div class="three-col text-center">
+        <div class="security-card"><div class="sec-icon">📧</div><h6>Soporte Técnico</h6><small>soporte&#64;habittracker.com</small></div>
+        <div class="security-card"><div class="sec-icon">⚖️</div><h6>Asuntos Legales</h6><small>legal&#64;habittracker.com</small></div>
+        <div class="security-card"><div class="sec-icon">🏢</div><h6>Dirección Postal</h6><small>Calle Tecnología 123, Madrid</small></div>
+      </div>
+    </section>
+
+    <!-- Aceptación -->
+    <div class="alert alert-success">
+      <h5>✅ Aceptación de los Términos</h5>
+      <p>Al hacer clic en "Registrarse" o al utilizar continuamente el Servicio, confirmas que has leído y comprendido estos Términos, eres mayor de 16 años y aceptas quedar vinculado por estos Términos.</p>
+    </div>
+
+    <!-- Acciones -->
+    <div class="border-top-section">
+      <div class="action-btns">
+        <button class="btn-outline" (click)="goToPrivacy()">🔒 Ver Política de Privacidad</button>
+        <div class="btn-group-right">
+          <button class="btn-accent" (click)="goToRegister()">✅ Aceptar y Registrarse</button>
+          <button class="btn-success" (click)="goBack()">🏠 Volver al Inicio</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer-section">
+      <small>Documento ID: TC-{{ docId }} | Versión: 3.2 | Cumple LSSI y LOPDGDD</small>
+    </div>
   </div>
 </div>

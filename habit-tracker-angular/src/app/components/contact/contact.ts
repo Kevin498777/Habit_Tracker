@@ -12,18 +12,30 @@ import { CommonModule } from '@angular/common';
 export class Contact {
   name = '';
   email = '';
+  subject = '';
   message = '';
+  privacyAccepted = false;
   sent = false;
+  formError = '';
 
   constructor(private router: Router) {}
 
   sendMessage() {
-    if (!this.name || !this.email || !this.message) return;
+    this.formError = '';
+    if (!this.name || !this.email || !this.subject || !this.message) {
+      this.formError = 'Por favor completa todos los campos.';
+      return;
+    }
+    if (!this.privacyAccepted) {
+      this.formError = 'Debes aceptar la Política de Privacidad.';
+      return;
+    }
     this.sent = true;
-    this.name = '';
-    this.email = '';
-    this.message = '';
+    this.name = ''; this.email = ''; this.subject = '';
+    this.message = ''; this.privacyAccepted = false;
   }
 
-  goBack() { this.router.navigate(['/habits']); }
+  goBack()      { this.router.navigate(['/habits']); }
+  goToPrivacy() { this.router.navigate(['/privacy']); }
+  goToTerms()   { this.router.navigate(['/terms']); }
 }

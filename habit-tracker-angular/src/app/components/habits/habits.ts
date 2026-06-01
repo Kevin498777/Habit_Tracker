@@ -23,6 +23,7 @@ export class Habits implements OnInit {
   completionRate = 0;
   weekCompletions = 0;
   today = new Date().toISOString().split('T')[0];
+  userName = '';
 
   constructor(
     private habitsService: HabitsService,
@@ -31,6 +32,9 @@ export class Habits implements OnInit {
   ) {}
 
   ngOnInit() {
+    const user = this.authService.getCurrentUser();
+    this.userName = user?.displayName || user?.email?.split('@')[0] || 'Usuario';
+
     this.habitsService.getHabits().subscribe(habits => {
       this.habits = habits;
       const stats = this.habitsService.getStats(habits);
@@ -88,10 +92,11 @@ export class Habits implements OnInit {
     return '¡Comienza completando tu primer hábito hoy! 📝';
   }
 
-  goToProfile() { this.router.navigate(['/profile']); }
-  goToPrivacy() { this.router.navigate(['/privacy']); }
-  goToTerms() { this.router.navigate(['/terms']); }
-  goToContact() { this.router.navigate(['/contact']); }
+  goToProfile()   { this.router.navigate(['/profile']); }
+  goToCalendar()  { this.router.navigate(['/calendar']); }
+  goToPrivacy()   { this.router.navigate(['/privacy']); }
+  goToTerms()     { this.router.navigate(['/terms']); }
+  goToContact()   { this.router.navigate(['/contact']); }
 
   async logout() {
     await this.authService.logout();

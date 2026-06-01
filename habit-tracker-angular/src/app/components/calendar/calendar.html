@@ -1,0 +1,97 @@
+<div class="cal-wrapper fade-in">
+
+  <!-- Encabezado con navegación de mes -->
+  <div class="cal-card mb-4">
+    <div class="cal-header-inner">
+      <div>
+        <h2>📅 Calendario de Hábitos</h2>
+        <p class="subtitle">Visualiza tu progreso día a día</p>
+      </div>
+      <div class="month-nav">
+        <button class="btn-nav" (click)="navigatePrev()">← Anterior</button>
+        <h4 class="month-title">{{ monthName }} {{ currentYear }}</h4>
+        <button class="btn-nav" (click)="navigateNext()">Siguiente →</button>
+      </div>
+    </div>
+
+    <!-- Filtro por hábito -->
+    <div class="filter-bar">
+      <label><strong>Ver:</strong></label>
+      <select [(ngModel)]="selectedHabitId" (change)="onHabitFilterChange()">
+        <option value="">🌐 Todos los hábitos (vista global)</option>
+        <option *ngFor="let habit of habits" [value]="habit.id">{{ habit.name }}</option>
+      </select>
+      <button class="btn-clear" *ngIf="selectedHabitId" (click)="clearFilter()">Limpiar filtro</button>
+    </div>
+  </div>
+
+  <!-- Estadísticas del mes -->
+  <div class="stats-row">
+    <div class="cal-card stat-card-cal">
+      <h3 class="text-primary">{{ monthStats.totalCompletions }}</h3>
+      <p>Completaciones este mes</p>
+    </div>
+    <div class="cal-card stat-card-cal">
+      <h3 class="text-success">{{ monthStats.activeDays }}</h3>
+      <p>Días con actividad</p>
+    </div>
+    <div class="cal-card stat-card-cal">
+      <h3 class="text-warning">{{ monthStats.bestStreak }}</h3>
+      <p>Mejor racha (días)</p>
+    </div>
+  </div>
+
+  <!-- Calendario -->
+  <div class="cal-card">
+
+    <!-- Días de la semana -->
+    <div class="calendar-grid">
+      <div class="calendar-weekday" *ngFor="let d of ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom']">{{ d }}</div>
+    </div>
+
+    <!-- Días del mes -->
+    <div class="calendar-grid calendar-days-grid">
+      <div *ngFor="let day of calendarDays"
+           class="calendar-day"
+           [class.calendar-day-empty]="day.empty"
+           [class.calendar-day-today]="day.isToday"
+           [class.calendar-day-single]="day.completionLevel === 'single'"
+           [class.calendar-day-partial]="day.completionLevel === 'partial'"
+           [class.calendar-day-full]="day.completionLevel === 'full'"
+           [title]="day.tooltip">
+        <div class="calendar-day-number" *ngIf="!day.empty">{{ day.day }}</div>
+        <div class="calendar-day-count" *ngIf="!day.empty && day.completedCount > 0">
+          <ng-container *ngIf="selectedHabitId">✓</ng-container>
+          <ng-container *ngIf="!selectedHabitId">{{ day.completedCount }}/{{ day.totalCount }}</ng-container>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leyenda -->
+    <div class="legend">
+      <span class="legend-label"><strong>Leyenda:</strong></span>
+      <div class="legend-item">
+        <span class="legend-swatch legend-single"></span>
+        <small>Algo de actividad</small>
+      </div>
+      <div class="legend-item">
+        <span class="legend-swatch legend-partial"></span>
+        <small>Avance parcial</small>
+      </div>
+      <div class="legend-item">
+        <span class="legend-swatch legend-full"></span>
+        <small>Día completo</small>
+      </div>
+      <div class="legend-item">
+        <span class="legend-swatch legend-today"></span>
+        <small>Hoy</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón volver -->
+  <div class="back-btn-row">
+    <button class="btn-back-home" (click)="goToHabits()">🏠 Volver a Mis Hábitos</button>
+  </div>
+
+</div>
