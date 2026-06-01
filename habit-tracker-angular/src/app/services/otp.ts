@@ -23,7 +23,7 @@ export class OtpService {
       template_id:     EMAILJS_TEMPLATE_ID,
       user_id:         EMAILJS_PUBLIC_KEY,
       template_params: {
-        to_email: toEmail,
+        email:    toEmail,
         otp_code: code,
       }
     };
