@@ -57,14 +57,65 @@
       <span class="badge">{{ user?.email }}</span>
     </div>
     <div class="info-row">
-      <span>Proveedor</span>
-      <span class="badge">
-        {{ user?.providerData[0]?.providerId === 'google.com' ? '🔵 Google' : '📧 Email' }}
+      <span>Métodos vinculados</span>
+      <span class="providers-row">
+        <span class="badge" *ngIf="hasGoogle">🔵 Google</span>
+        <span class="badge" *ngIf="hasEmail">📧 Email/Contraseña</span>
       </span>
     </div>
     <div class="info-row">
       <span>UID</span>
       <span class="badge uid">{{ user?.uid }}</span>
+    </div>
+  </div>
+
+  <!-- Sección de vinculación de cuentas -->
+  <div class="account-info link-section">
+    <h3>🔗 Vincular Métodos de Acceso</h3>
+
+    <!-- Vincular Google (si no está vinculado) -->
+    <div class="link-row-item" *ngIf="!hasGoogle">
+      <div>
+        <strong>Google</strong>
+        <small>Inicia sesión con tu cuenta de Google</small>
+      </div>
+      <button class="btn-link-google" (click)="linkGoogle()">Vincular Google</button>
+    </div>
+    <div class="link-row-item linked" *ngIf="hasGoogle">
+      <div>
+        <strong>🔵 Google vinculado</strong>
+        <small>Puedes iniciar sesión con Google</small>
+      </div>
+      <span class="badge-linked">✓ Activo</span>
+    </div>
+
+    <!-- Vincular Email/Password (si no está vinculado) -->
+    <div *ngIf="!hasEmail">
+      <div class="link-row-item">
+        <div>
+          <strong>Email / Contraseña</strong>
+          <small>Establece una contraseña para tu cuenta</small>
+        </div>
+        <button class="btn-link-email" (click)="showPasswordForm = !showPasswordForm">
+          {{ showPasswordForm ? 'Cancelar' : 'Establecer contraseña' }}
+        </button>
+      </div>
+      <div class="password-form" *ngIf="showPasswordForm">
+        <input type="password" placeholder="Nueva contraseña (mín. 6 caracteres)"
+               [(ngModel)]="newPassword" />
+        <input type="password" placeholder="Confirmar contraseña"
+               [(ngModel)]="confirmNewPassword" />
+        <p class="link-error" *ngIf="linkError">{{ linkError }}</p>
+        <p class="link-success" *ngIf="linkSuccess">{{ linkSuccess }}</p>
+        <button class="btn-save-password" (click)="linkEmailPassword()">Guardar contraseña</button>
+      </div>
+    </div>
+    <div class="link-row-item linked" *ngIf="hasEmail">
+      <div>
+        <strong>📧 Email/Contraseña vinculado</strong>
+        <small>Puedes iniciar sesión con email y contraseña</small>
+      </div>
+      <span class="badge-linked">✓ Activo</span>
     </div>
   </div>
 

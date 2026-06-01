@@ -1,36 +1,63 @@
 <div class="container fade-in">
-  <h2>Iniciar Sesión</h2>
 
-  <div class="form-group">
-    <label for="loginEmail">Usuario o Email</label>
-    <input id="loginEmail" type="email" placeholder="Ingresa tu correo electrónico"
-           [(ngModel)]="email" />
-  </div>
+  <!-- Panel normal de login -->
+  <ng-container *ngIf="!needsLinking">
+    <h2>Iniciar Sesión</h2>
 
-  <div class="form-group">
-    <label for="loginPassword">Contraseña</label>
-    <input id="loginPassword" type="password" placeholder="Ingresa tu contraseña"
-           [(ngModel)]="password" />
-  </div>
+    <div class="form-group">
+      <label for="loginEmail">Correo Electrónico</label>
+      <input id="loginEmail" type="email" placeholder="tu@email.com"
+             [(ngModel)]="email" autocomplete="email" />
+    </div>
 
-  <div class="form-check">
-    <input type="checkbox" id="remember" [(ngModel)]="rememberMe" />
-    <label for="remember">Recordar mis datos</label>
-  </div>
+    <div class="form-group">
+      <label for="loginPassword">Contraseña</label>
+      <input id="loginPassword" type="password" placeholder="Ingresa tu contraseña"
+             [(ngModel)]="password" autocomplete="current-password" (keyup.enter)="onLogin()" />
+    </div>
 
-  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    <div class="form-check">
+      <input type="checkbox" id="remember" [(ngModel)]="rememberMe" />
+      <label for="remember">Recordar mis datos</label>
+    </div>
 
-  <button (click)="onLogin()">Iniciar Sesión</button>
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 
-  <div class="divider"><span>o</span></div>
+    <button (click)="onLogin()">Iniciar Sesión</button>
 
-  <button class="google" (click)="onGoogleLogin()">
-    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" />
-    Continuar con Google
-  </button>
+    <div class="divider"><span>o</span></div>
 
-  <div class="link-row">
-    <span>¿No tienes una cuenta?</span>
-    <button class="secondary" (click)="goToRegister()">Crear Cuenta</button>
-  </div>
+    <button class="google" (click)="onGoogleLogin()">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" />
+      Continuar con Google
+    </button>
+
+    <div class="link-row">
+      <span>¿No tienes cuenta?</span>
+      <button class="secondary" (click)="goToRegister()">Crear Cuenta</button>
+    </div>
+  </ng-container>
+
+  <!-- Panel de vinculación: Google detectó cuenta email/password existente -->
+  <ng-container *ngIf="needsLinking">
+    <div class="link-icon">🔗</div>
+    <h2>Vincular Cuentas</h2>
+    <p class="link-info">
+      El correo <strong>{{ linkingEmail }}</strong> ya tiene una cuenta con contraseña.<br>
+      Ingresa tu contraseña para vincularla con Google.
+    </p>
+
+    <div class="form-group">
+      <label>Contraseña actual</label>
+      <input type="password" placeholder="Tu contraseña"
+             [(ngModel)]="linkingPassword" (keyup.enter)="onLinkAccounts()"
+             autocomplete="current-password" />
+    </div>
+
+    <p class="error" *ngIf="linkingError">{{ linkingError }}</p>
+
+    <button (click)="onLinkAccounts()">🔗 Vincular y continuar</button>
+    <button class="secondary" (click)="cancelLinking()">Cancelar</button>
+  </ng-container>
+
 </div>

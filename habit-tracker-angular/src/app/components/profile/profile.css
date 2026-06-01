@@ -158,6 +158,99 @@
   border: 1px solid rgba(99, 102, 241, 0.3);
 }
 
+/* Linking section */
+.link-section { margin-top: 1.25rem; }
+
+.link-row-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--border-color);
+  gap: 1rem;
+}
+.link-row-item:last-child { border-bottom: none; }
+.link-row-item strong { color: var(--text-primary); display: block; font-size: 0.9rem; }
+.link-row-item small { color: var(--text-secondary); font-size: 0.8rem; }
+.link-row-item.linked strong { color: var(--success-color); }
+
+.providers-row { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+.badge-linked {
+  background: rgba(16,185,129,0.15);
+  color: var(--success-color);
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  border: 1px solid rgba(16,185,129,0.3);
+  white-space: nowrap;
+}
+
+.btn-link-google {
+  padding: 0.45rem 0.9rem;
+  background: transparent;
+  color: #4285F4;
+  border: 1px solid #4285F4;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-link-google:hover { background: rgba(66,133,244,0.1); }
+
+.btn-link-email {
+  padding: 0.45rem 0.9rem;
+  background: transparent;
+  color: var(--primary-light);
+  border: 1px solid var(--primary-color);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-link-email:hover { background: rgba(99,102,241,0.1); }
+
+.password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 1rem;
+  background: rgba(45,55,72,0.2);
+  border-radius: 10px;
+  margin-top: 0.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.password-form input {
+  padding: 0.65rem 0.9rem;
+  background: rgba(45,55,72,0.5);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+.password-form input:focus { outline: none; border-color: var(--primary-color); }
+
+.btn-save-password {
+  padding: 0.65rem;
+  background: var(--gradient);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+.btn-save-password:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(99,102,241,0.3); }
+
+.link-error   { color: var(--danger-color); font-size: 0.8rem; margin: 0; }
+.link-success { color: var(--success-color); font-size: 0.85rem; margin: 0; }
+
 .uid {
   font-size: 0.7rem;
   max-width: 150px;
